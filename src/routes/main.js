@@ -71,10 +71,10 @@ router.get('/profile/:name', async (req, res) => {
         res.locals.baseUrl=getBaseUrl;
         res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
         console.log(name, 'profile page username')
-        //let uAPI = await axios.get(api_url+`/account/${name}`); 
+        let uAPI = await axios.get(api_url+`/account/${name}`); 
       
         let nTags = await fetchTags(); 
-        //let act = uAPI.data; 
+        let act = uAPI.data; 
         let vp = breej.votingPower(act); 
         let bw = breej.bandwidth(act); 
         //let blogAPI = await axios.get(api_url+`/blog/${name}`); 
@@ -98,7 +98,7 @@ router.get('/profile/:name', async (req, res) => {
             loguser: loguser, 
             profName: name, 
             trendingTags: nTags, 
-            //acct: actAPI.data, 
+            acct: actAPI.data, 
             category: category, 
             notices: '0'}) 
         } else { 
