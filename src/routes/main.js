@@ -148,7 +148,7 @@ router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   //if (user && token && await validateToken(req.cookies.breeze_username, token)) { 
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) {
     let token = req.cookies.token; let user = req.cookies.breeze_username;  
-    console.log('wallet user is '. user)
+    console.log('wallet user is ', user)
     let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); 
     let wifKey = decrypted.toString(CryptoJS.enc.Utf8); 
     let pubKey = breej.privToPub(wifKey);
