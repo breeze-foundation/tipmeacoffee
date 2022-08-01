@@ -86,7 +86,7 @@ router.get('/profile/:name', async (req, res) => {
         if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
           loguser = req.cookies.breeze_username; 
           console.log('this is profile page user call', loguser)
-          let actAPI = await axios.get(api_url+`/account/${loguser}`);
+          //let actAPI = await axios.get(api_url+`/account/${loguser}`);
           //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
           res.render('profile', { 
             user: uAPI.data, 
@@ -98,7 +98,7 @@ router.get('/profile/:name', async (req, res) => {
             loguser: loguser, 
             profName: name, 
             trendingTags: nTags, 
-            acct: actAPI.data, 
+            //acct: actAPI.data, 
             category: category, 
             notices: '0'}) 
         } else { 
