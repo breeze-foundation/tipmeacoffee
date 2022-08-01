@@ -3,7 +3,7 @@ const axios = require('axios')
 const moment = require('moment');
 const mcache = require('memory-cache');
 
-const api = 'https://api.breezescan.io'; breej.init({ api: 'https://api.breezechain.org', bwGrowth: 36000000000, vpGrowth: 120000000000 })
+const api = 'https://api.breezescan.io'; breej.init({ api: 'https://api.breezescan.io', bwGrowth: 36000000000, vpGrowth: 120000000000 })
 const categories = ['News','Cryptocurrency','Food','Sports','Technology','LifeStyle','Health','Gaming','Business','General'];
 
 const getTags = async (maxTags) => { if(!maxTags) maxTags = 15; let timeNow = new Date().getTime(); let postsTime = timeNow - 14400000; let tagsAPI = await axios.get(api+`/trending?after=${postsTime}&limit=100`); let posts = tagsAPI.data; let tags = {};
