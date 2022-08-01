@@ -37,21 +37,43 @@ router.get('', async (req, res) => {
   if (promotedData.length > 0) finalData.splice(1, 0, promotedData[0]); 
   if (promotedData.length > 1) finalData.splice(5, 0, promotedData[1]); 
   if (promotedData.length > 2) finalData.splice(10, 0, promotedData[2]);
-  let _finalData = await Promise.all( finalData.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
-  let nPosts=await axios.get(api_url+`/new/${index}`);let iPosts=nPosts.data; let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
+  let _finalData = await Promise.all( finalData.map(async (post) => { 
+    let userAPI = await axios.get(api_url+`/account/${post.author}`); 
+    let ago = moment.utc(post.ts).fromNow(); 
+    return { ...post, user: userAPI.data.json, ago: ago } }) );
+  let nPosts=await axios.get(api_url+`/new/${index}`);
+  let iPosts=nPosts.data; 
+  let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
     loguser = req.cookies.breeze_username; 
-    let actAPI = await axios.get(api_url+`/account/${loguser}`); 
+    console.log(loguser)
+    //let actAPI = await axios.get(api_url+`/account/${loguser}`); 
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
-    if(index == 0){ res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, category: category, notices: '0' }) } else {res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, category: category, notices:'0'}); }
-  } else { loguser = ""; if(index == 0) {res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0' }) } else{ res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
+    if(index == 0){ res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) } else {res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, category: category, notices:'0'}); }
+  } else { 
+    loguser = ""; 
+    if(index == 0) 
+    {
+      res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0' }) 
+    } else { 
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
   }
 })
 
 router.get('/profile/:name', async (req, res) => { 
-  breej.getAccount(req.params.name, async function (error, account) {if(account.error){res.redirect('/404');}else{
-    let name = req.params.name; let userAPI = await axios.get(api_url+`/account/${name}`); 
-    res.locals.baseUrl=getBaseUrl; let nTags = await fetchTags(); let act = userAPI.data; let vp = breej.votingPower(act); let bw = breej.bandwidth(act); let blogAPI = await axios.get(api_url+`/blog/${name}`); let likesAPI = await axios.get(api_url+`/votes/${name}`); 
+  breej.getAccount(req.params.name, async function (error, account) {
+    if(account.error){
+      res.redirect('/404');
+    } else {
+    let name = req.params.name; 
+    let userAPI = await axios.get(api_url+`/account/${name}`); 
+    res.locals.baseUrl=getBaseUrl; 
+    let nTags = await fetchTags(); 
+    let act = userAPI.data; 
+    let vp = breej.votingPower(act); 
+    let bw = breej.bandwidth(act); 
+    let blogAPI = await axios.get(api_url+`/blog/${name}`); 
+    let likesAPI = await axios.get(api_url+`/votes/${name}`); 
     if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
     if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
     res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
