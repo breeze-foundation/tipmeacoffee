@@ -1,5 +1,4 @@
 <%- include('./common/header')%>
-<% console.log('profile page')%>
 <% let activeTime = moment.utc(user.created.ts).format("MMMM YYYY");let followList = JSON.stringify(user.followers);let profileuser = user.name;let mxVP=16000;let mxBW=64000;
 let prof_avatar='';if(user.json && user.json.profile && user.json.profile.avatar){prof_avatar=user.json.profile.avatar}else{prof_avatar=''};let prof_cover='';if(user.json && user.json.profile && user.json.profile.cover_image){prof_cover=user.json.profile.cover_image}else{prof_cover=''};let prof_about='';if(user.json && user.json.profile && user.json.profile.about){prof_about=user.json.profile.about}else{prof_about=''};let prof_loc='';if(user.json && user.json.profile && user.json.profile.location){prof_loc=user.json.profile.location}else{prof_loc=''};let prof_web='';if(user.json && user.json.profile && user.json.profile.website){prof_web=user.json.profile.website}else{prof_web=''}
 
