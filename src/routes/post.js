@@ -15,7 +15,7 @@ const validateToken = async(username, token) => {if(!username || !token) return 
 async function page(req, res) {
     try {
         let author = req.params.name; let link = req.params.link; 
-        console.log('post page author is ', author);
+        //console.log('post page author is ', author);
         let nTags = await fetchTags(); let postAPI = await axios.get(api_url+`/content/${author}/${link}`);
   		let post_category = postAPI.data.json.category; 
   		let simAPI = await axios.get(api_url+`/new?category=${post_category}`);
