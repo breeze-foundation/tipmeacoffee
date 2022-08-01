@@ -148,14 +148,12 @@ router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   //if (user && token && await validateToken(req.cookies.breeze_username, token)) { 
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) {
     let token = req.cookies.token; let user = req.cookies.breeze_username;  
-    console.log('wallet user is ', user)
     let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); 
     let wifKey = decrypted.toString(CryptoJS.enc.Utf8); 
     let pubKey = breej.privToPub(wifKey);
     let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); 
     let transferAPI = await axios.get(api_url+`/transfers/${user}`); 
     let userAPI = await axios.get(api_url+`/account/${user}`); 
-    //console.log(userAPI)
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
     let nTags = await fetchTags(); res.render('wallet', { 
       activities: transferAPI.data, 
