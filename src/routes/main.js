@@ -155,7 +155,7 @@ router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
     let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); 
     let transferAPI = await axios.get(api_url+`/transfers/${user}`); 
     let userAPI = await axios.get(api_url+`/account/${user}`); 
-    console.log(userAPI)
+    //console.log(userAPI)
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
     let nTags = await fetchTags(); res.render('wallet', { 
       activities: transferAPI.data, 
