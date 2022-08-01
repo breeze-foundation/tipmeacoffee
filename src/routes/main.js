@@ -145,9 +145,21 @@ router.get('/witnesses', async (req, res, next) => {
 router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   let token = req.cookies.token; let user = req.cookies.breeze_username;
   var pricefeed = await clfeed.priceFeed.methods.latestRoundData().call();var bnbprice = ((pricefeed.answer)/1e8).toFixed(2);
-  if (user && token && await validateToken(req.cookies.breeze_username, token)) { let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let wifKey = decrypted.toString(CryptoJS.enc.Utf8); let pubKey = breej.privToPub(wifKey);let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); let transferAPI = await axios.get(api_url+`/transfers/${user}`); let userAPI = await axios.get(api_url+`/account/${user}`); 
-  //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
-  let nTags = await fetchTags(); res.render('wallet', { activities: transferAPI.data, acct: userAPI.data, trendingTags: nTags, loguser: user, earnToday: earnAPI, category: category,wifKey:wifKey,pubKey:pubKey, notices: '0', bnbprice: bnbprice }) } else { res.redirect('/welcome'); }
+  if (user && token && await validateToken(req.cookies.breeze_username, token)) { 
+    console.log('wallet user is '. user)
+    let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); 
+    let wifKey = decrypted.toString(CryptoJS.enc.Utf8); 
+    let pubKey = breej.privToPub(wifKey);
+    let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); 
+    let transferAPI = await axios.get(api_url+`/transfers/${user}`); 
+    let userAPI = await axios.get(api_url+`/account/${user}`); 
+    console.log(userAPI)
+    //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
+    let nTags = await fetchTags(); res.render('wallet', { 
+      activities: transferAPI.data, 
+      acct: userAPI.data, 
+      trendingTags: nTags, 
+      loguser: user, earnToday: earnAPI, category: category,wifKey:wifKey,pubKey:pubKey, notices: '0', bnbprice: bnbprice }) } else { res.redirect('/welcome'); }
 })
 
 router.get('/share', async (req, res) => {res.locals.page = "share";let token = req.cookies.token;
