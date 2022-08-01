@@ -49,7 +49,7 @@ router.get('', async (req, res) => {
     console.log(loguser)
     //let actAPI = await axios.get(api_url+`/account/${loguser}`); 
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
-    if(index == 0){ res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) } else {res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, category: category, notices:'0'}); }
+    if(index == 0){ res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) } else {res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
   } else { 
     loguser = ""; 
     if(index == 0) 
