@@ -111,7 +111,7 @@ let trimString = function (string, length) {return string.length > length ? stri
 
 let promoted_api='https://api.breezechain.org/promoted';
 async function getapi(url) { const response = await fetch(url);const data = await response.json(); if(data.length>0) {let first = (data[0].promoted)/1000000;$('.min_boost').html('Bid more than ' + first + ' TOK to be on top')} else{$('.min_boost').html('Min bid is 0.1 TOK')}; }; getapi(promoted_api);
-
+/*
 var index = 20;
 var loading = false;
 $(window).scroll(function() {
@@ -158,4 +158,5 @@ $(window).scroll(function() {
             }, error: function(err) { loader.classList.add('loader-hidden'); loading = false;}
         });
     }
- });
+});
+*/
