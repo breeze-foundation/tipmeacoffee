@@ -66,6 +66,7 @@ router.get('/profile/:name', async (req, res) => {
       res.redirect('/404');
     } else {
     let name = req.params.name; 
+    console.log(name, 'profile page username')
     let userAPI = await axios.get(api_url+`/account/${name}`); 
     res.locals.baseUrl=getBaseUrl; 
     let nTags = await fetchTags(); 
