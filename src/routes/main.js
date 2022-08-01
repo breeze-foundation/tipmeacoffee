@@ -115,7 +115,7 @@ router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   let token = req.cookies.token; let user = req.cookies.breeze_username;
   console.log('wallet page and user is ', user)
   var pricefeed = await clfeed.priceFeed.methods.latestRoundData().call();var bnbprice = ((pricefeed.answer)/1e8).toFixed(2);
-  if (token && await validateToken(req.cookies.breeze_username, token)) { let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let wifKey = decrypted.toString(CryptoJS.enc.Utf8); let pubKey = breej.privToPub(wifKey);let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); let transferAPI = await axios.get(api_url+`/transfers/${user}`); let userAPI = await axios.get(api_url+`/account/${user}`); 
+  if (user && token && await validateToken(req.cookies.breeze_username, token)) { let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let wifKey = decrypted.toString(CryptoJS.enc.Utf8); let pubKey = breej.privToPub(wifKey);let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); let transferAPI = await axios.get(api_url+`/transfers/${user}`); let userAPI = await axios.get(api_url+`/account/${user}`); 
   //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
   let nTags = await fetchTags(); res.render('wallet', { activities: transferAPI.data, acct: userAPI.data, trendingTags: nTags, loguser: user, earnToday: earnAPI, category: category,wifKey:wifKey,pubKey:pubKey, notices: '0', bnbprice: bnbprice }) } else { res.redirect('/welcome'); }
 })
