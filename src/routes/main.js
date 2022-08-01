@@ -67,10 +67,10 @@ router.get('/profile/:name', async (req, res) => {
     } else {
     let name = req.params.name; 
     console.log(name, 'profile page username')
-    let userAPI = await axios.get(api_url+`/account/${name}`); 
+    let uAPI = await axios.get(api_url+`/account/${name}`); 
     res.locals.baseUrl=getBaseUrl; 
     let nTags = await fetchTags(); 
-    let act = userAPI.data; 
+    let act = uAPI.data; 
     let vp = breej.votingPower(act); 
     let bw = breej.bandwidth(act); 
     let blogAPI = await axios.get(api_url+`/blog/${name}`); 
@@ -78,9 +78,11 @@ router.get('/profile/:name', async (req, res) => {
     if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
     if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
     res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
-    if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { loguser = req.cookies.breeze_username; let actAPI = await axios.get(api_url+`/account/${loguser}`);
-    //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
-    res.render('profile', { user: userAPI.data, articles: _finalData, likes: _finalDataL, moment: moment, bw: bw, vp: vp, loguser: loguser, profName: name, trendingTags: nTags, acct: actAPI.data, category: category, notices: '0'}) } else { loguser = ""; res.render('profile', { user: userAPI.data, articles: _finalData, likes: _finalDataL, moment: moment, bw: bw, vp: vp, loguser: loguser, profName: name, trendingTags: nTags, category: category}) }
+    if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
+      loguser = req.cookies.breeze_username; 
+      if(loguser && loguser !==''){let actAPI = await axios.get(api_url+`/account/${loguser}`);}
+      //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
+      res.render('profile', { user: uAPI.data, articles: _finalData, likes: _finalDataL, moment: moment, bw: bw, vp: vp, loguser: loguser, profName: name, trendingTags: nTags, acct: actAPI.data, category: category, notices: '0'}) } else { loguser = ""; res.render('profile', { user: uAPI.data, articles: _finalData, likes: _finalDataL, moment: moment, bw: bw, vp: vp, loguser: loguser, profName: name, trendingTags: nTags, category: category}) }
     }})
 })
 
