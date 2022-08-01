@@ -55,15 +55,7 @@
                                             href="/category/<%- selectedCat[i].toLowerCase() %>">
                                             <%- selectedCat[i] %>
                                         </a></div>
-                                    <% if(loguser && loguser !== ""){ let catgFollowList=JSON.stringify(acct.categoryFollows);
-                                        if((catgFollowList) && catgFollowList.includes(selectedCat[i].toLowerCase())) {
-                                        %><span class="follow-btn-wrap btn_unfollow_catg"
-                                            data-catg="<%- selectedCat[i] %>">Following</span>
-                                        <% }else{ %><span class="follow-btn-wrap btn_follow_catg"
-                                                data-catg="<%- selectedCat[i] %>">Follow</span>
-                                            <% } } else { %><span class="follow-btn-wrap btn_follow_catg"
-                                                    data-catg="<% selectedCat[i] %>">Follow</span>
-                                                <% } %>
+                                        <span class="follow-btn-wrap btn_follow_catg" data-catg="<% selectedCat[i] %>">Follow</span>
                                 </div>
                             </div>
                         </div>
