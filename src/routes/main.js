@@ -90,8 +90,8 @@ router.get('/profile/:name', async (req, res) => {
           //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
           res.render('profile', { 
             user: uAPI.data, 
-            articles: _finalData, 
-            likes: _finalDataL, 
+            //articles: _finalData, 
+            //likes: _finalDataL, 
             moment: moment, 
             bw: bw, 
             vp: vp, 
@@ -105,8 +105,8 @@ router.get('/profile/:name', async (req, res) => {
           loguser = ""; 
           res.render('profile', { 
             user: uAPI.data, 
-            articles: _finalData, 
-            likes: _finalDataL, 
+            //articles: _finalData, 
+            //likes: _finalDataL, 
             moment: moment, 
             bw: bw, 
             vp: vp, 
