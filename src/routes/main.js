@@ -47,7 +47,7 @@ router.get('', async (req, res) => {
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
     loguser = req.cookies.breeze_username; 
     console.log(loguser)
-    //let actAPI = await axios.get(api_url+`/account/${loguser}`); 
+    //let actAPI = await axios.get(api_url+`/account/${loguser}`);
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
     if(index == 0){ res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) } else {res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
   } else { 
@@ -110,6 +110,7 @@ router.get('/witnesses', async (req, res, next) => {
 
 router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   let token = req.cookies.token; let user = req.cookies.breeze_username;
+  console.log('wallet page and user is ', user)
   var pricefeed = await clfeed.priceFeed.methods.latestRoundData().call();var bnbprice = ((pricefeed.answer)/1e8).toFixed(2);
   if (token && await validateToken(req.cookies.breeze_username, token)) { let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let wifKey = decrypted.toString(CryptoJS.enc.Utf8); let pubKey = breej.privToPub(wifKey);let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); let transferAPI = await axios.get(api_url+`/transfers/${user}`); let userAPI = await axios.get(api_url+`/account/${user}`); 
   //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
