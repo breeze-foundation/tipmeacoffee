@@ -54,7 +54,7 @@ const addFile = async (fileName, filePath) => {
 async function post(req, res) {
   try {
     if (await validateToken(req.cookies.breeze_username, req.cookies.token)) {
-      console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
+      //console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
       if(spammers.includes(req.cookies.breeze_username)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
       let token = req.cookies.token;let wifKey = await nkey(req.cookies.token);let author = req.cookies.breeze_username;let post = req.body;
       let allowed_tags=/^[a-z\d\_\s]+$/i;
