@@ -144,7 +144,7 @@ router.get('/witnesses', async (req, res, next) => {
 
 router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   //let token = req.cookies.token; let user = req.cookies.breeze_username;
-  //var pricefeed = await clfeed.priceFeed.methods.latestRoundData().call();var bnbprice = ((pricefeed.answer)/1e8).toFixed(2);
+  var pricefeed = await clfeed.priceFeed.methods.latestRoundData().call();var bnbprice = ((pricefeed.answer)/1e8).toFixed(2);
   //if (user && token && await validateToken(req.cookies.breeze_username, token)) { 
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) {
     let token = req.cookies.token; let user = req.cookies.breeze_username;  
