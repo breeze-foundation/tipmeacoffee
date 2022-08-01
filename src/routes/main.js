@@ -77,11 +77,11 @@ router.get('/profile/:name', async (req, res) => {
         let act = uAPI.data; 
         let vp = breej.votingPower(act); 
         let bw = breej.bandwidth(act); 
-        let blogAPI = await axios.get(api_url+`/blog/${name}`); 
-        let likesAPI = await axios.get(api_url+`/votes/${name}`); 
+        //let blogAPI = await axios.get(api_url+`/blog/${name}`); 
+        //let likesAPI = await axios.get(api_url+`/votes/${name}`); 
 
-        if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
-        if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
+        //if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
+        //if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
       
         if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
           loguser = req.cookies.breeze_username; 
