@@ -49,14 +49,17 @@ router.get('', async (req, res) => {
     console.log(loguser)
     //let actAPI = await axios.get(api_url+`/account/${loguser}`);
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
-    if(index == 0){ res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) } else {res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
+    //if(index == 0){ 
+      res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) 
+    //} else {
+    //  res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
   } else { 
     loguser = ""; 
-    if(index == 0) 
-    {
+    //if(index == 0) 
+    //{
       res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0' }) 
-    } else { 
-      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
+    //} else { 
+    //  res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
   }
 })
 
@@ -67,46 +70,42 @@ router.get('/profile/:name', async (req, res) => {
     } else { 
       let name = req.params.name;
       if(name && name !==''){
-       
         res.locals.baseUrl=getBaseUrl;
         res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
         console.log(name, 'profile page username')
         let uAPI = await axios.get(api_url+`/account/${name}`); 
-      
         let nTags = await fetchTags(); 
         let act = uAPI.data; 
         let vp = breej.votingPower(act); 
         let bw = breej.bandwidth(act); 
-        //let blogAPI = await axios.get(api_url+`/blog/${name}`); 
-        //let likesAPI = await axios.get(api_url+`/votes/${name}`); 
-
-        //if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
-        //if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
-      
+        let blogAPI = await axios.get(api_url+`/blog/${name}`); 
+        let likesAPI = await axios.get(api_url+`/votes/${name}`); 
+        if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
+        if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
         if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
           loguser = req.cookies.breeze_username; 
           console.log('this is profile page user call', loguser)
-          //let actAPI = await axios.get(api_url+`/account/${loguser}`);
+          let actAPI = await axios.get(api_url+`/account/${loguser}`);
           //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
           res.render('profile', { 
             user: uAPI.data, 
-            //articles: _finalData, 
-            //likes: _finalDataL, 
+            articles: _finalData, 
+            likes: _finalDataL, 
             moment: moment, 
             bw: bw, 
             vp: vp, 
             loguser: loguser, 
             profName: name, 
             trendingTags: nTags, 
-            //acct: actAPI.data, 
+            acct: actAPI.data, 
             category: category, 
             notices: '0'}) 
         } else { 
           loguser = ""; 
           res.render('profile', { 
             user: uAPI.data, 
-            //articles: _finalData, 
-            //likes: _finalDataL, 
+            articles: _finalData, 
+            likes: _finalDataL, 
             moment: moment, 
             bw: bw, 
             vp: vp, 

@@ -59,8 +59,8 @@ let prof_avatar='';if(user.json && user.json.profile && user.json.profile.avatar
                         <div class="profile-nav-item activeTab posts_tab">Posts</div>
                         <div class="profile-nav-item likes_tab">Likes</div>
                     </div>
-                    <div id="profile_posts"></div>
-                    <div id="profile_likes"></div>
+                    <div id="profile_posts"><%- include('./common/blog.ejs') %></div>
+                    <div id="profile_likes"><%- include('./common/likes.ejs') %></div>
                 </div>
             </div>
             <%- include('./common/rnav', {cate: category}) %>

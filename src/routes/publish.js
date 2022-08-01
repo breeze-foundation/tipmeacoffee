@@ -3,7 +3,6 @@ const breej = require('breej')
 const helper = require('./helper');
 const videoParser = require("js-video-url-parser");
 const fs = require('fs')
-const axios = require('axios')
 const path = require('path')
 const { create } = require('ipfs-http-client')
 //const ipfsAPI = create('https://ipfs.infura.io:5001/api/v0')
