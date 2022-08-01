@@ -72,18 +72,18 @@ router.get('/profile/:name', async (req, res) => {
       if(name && name !==''){
         res.locals.baseUrl=getBaseUrl;
         res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
-        let uAPI = await axios.get(api_main_url+`/account/${name}`); 
+        let uAPI = await axios.get(api_url+`/account/${name}`); 
         let nTags = await fetchTags(); 
         let act = uAPI.data; 
         let vp = breej.votingPower(act); 
         let bw = breej.bandwidth(act); 
-        let blogAPI = await axios.get(api_main_url+`/blog/${name}`); 
-        let likesAPI = await axios.get(api_main_url+`/votes/${name}`); 
-        if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_main_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
-        if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_main_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
+        let blogAPI = await axios.get(api_url+`/blog/${name}`); 
+        let likesAPI = await axios.get(api_url+`/votes/${name}`); 
+        if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
+        if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
         if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
           loguser = req.cookies.breeze_username;
-          let actAPI = await axios.get(api_main_url+`/account/${loguser}`);
+          let actAPI = await axios.get(api_url+`/account/${loguser}`);
           //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
           res.render('profile', { 
             user: uAPI.data, 
