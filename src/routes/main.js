@@ -45,8 +45,7 @@ router.get('', async (req, res) => {
   //let iPosts=nPosts.data; 
   //let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
-    loguser = req.cookies.breeze_username; 
-    console.log(loguser)
+    loguser = req.cookies.breeze_username;
     //let actAPI = await axios.get(api_url+`/account/${loguser}`);
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
     //if(index == 0){ 
@@ -72,7 +71,6 @@ router.get('/profile/:name', async (req, res) => {
       if(name && name !==''){
         res.locals.baseUrl=getBaseUrl;
         res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
-        console.log(name, 'profile page username')
         let uAPI = await axios.get(api_url+`/account/${name}`); 
         let nTags = await fetchTags(); 
         let act = uAPI.data; 
@@ -83,8 +81,7 @@ router.get('/profile/:name', async (req, res) => {
         if (blogAPI.data.length > 0) _finalData = await Promise.all(blogAPI.data.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userAPI.data.json || false } }));else _finalData = blogAPI.data
         if (likesAPI.data.length > 0) _finalDataL = await Promise.all(likesAPI.data.map(async (post) => { let userLAPI = await axios.get(api_url+`/account/${post.author}`); return { ...post, user: userLAPI.data.json || false } }));else _finalDataL = likesAPI.data
         if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
-          loguser = req.cookies.breeze_username; 
-          console.log('this is profile page user call', loguser)
+          loguser = req.cookies.breeze_username;
           let actAPI = await axios.get(api_url+`/account/${loguser}`);
           //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
           res.render('profile', { 
@@ -147,7 +144,6 @@ router.get('/witnesses', async (req, res, next) => {
 
 router.get('/wallet', async (req, res) => {res.locals.page = "wallet";
   let token = req.cookies.token; let user = req.cookies.breeze_username;
-  console.log('wallet page and user is ', user)
   var pricefeed = await clfeed.priceFeed.methods.latestRoundData().call();var bnbprice = ((pricefeed.answer)/1e8).toFixed(2);
   if (user && token && await validateToken(req.cookies.breeze_username, token)) { let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let wifKey = decrypted.toString(CryptoJS.enc.Utf8); let pubKey = breej.privToPub(wifKey);let earnAPI = await axios.get(api_url+`/distributed/${user}/today`); let transferAPI = await axios.get(api_url+`/transfers/${user}`); let userAPI = await axios.get(api_url+`/account/${user}`); 
   //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${user}`);
