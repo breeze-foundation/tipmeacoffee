@@ -174,7 +174,7 @@ router.get('/feed', async (req, res, next) => {
 
 router.post('/upvote', async (req, res) => {
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { let post = req.body; let voter = req.cookies.breeze_username;
-    console.log(req.clientIp + 'voter is ' + req.cookies.breeze_username)
+    //console.log(req.clientIp + 'voter is ' + req.cookies.breeze_username)
     if(spammers.includes(voter)){res.send({ error: true, message: 'You are not allowed to upvote due to spamming!' });return false;}
     let newTx = { type: 5, data: { link: post.postLink, author: post.author } };let wifKey = await nkey(req.cookies.token);
     breej.getAccount(voter, function (error, account) {
