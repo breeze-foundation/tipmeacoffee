@@ -56,7 +56,10 @@ async function post(req, res) {
     if (await validateToken(req.cookies.breeze_username, req.cookies.token)) {
       //console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
       if(spammers.includes(req.cookies.breeze_username)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
-      let token = req.cookies.token;let wifKey = await nkey(req.cookies.token);let author = req.cookies.breeze_username;let post = req.body;
+      let token = req.cookies.token;let wifKey = await nkey(req.cookies.token);
+      let author = req.cookies.breeze_username;
+      if(!author){res.send({ error: true, message: 'user authentication fails' }); return false }
+      let post = req.body;
       let allowed_tags=/^[a-z\d\_\s]+$/i;
       if (!allowed_tags.test(post.tags)) {res.send({ error: true, message: 'Only alphanumeric tags, no Characters.' });return false}
       let tags=post.tags.replace(/\s\s+/g, ' ');let tags_arr=tags.trim().split(' ');
