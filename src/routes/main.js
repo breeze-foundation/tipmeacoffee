@@ -47,7 +47,7 @@ router.get('', async (req, res) => {
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
     loguser = req.cookies.breeze_username;
       let actAPI = await axios.get(api_url+`/account/${loguser}`);
-      let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
+      //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
       if(index == 0){ 
       res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) 
       } else {
