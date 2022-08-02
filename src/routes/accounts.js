@@ -23,8 +23,10 @@ async function logout(req, res) { try { res.clearCookie('breeze_username'); res.
 
 async function login(req, res) {
     //try {
-        var user = req.body; 
-        var key = user.pivkey; 
+        var user = req.body;  
+        if (!user.username || user.username == '') { res.send({ error: true, message: 'Enter valid username' }); return false; };
+        if (!user.pivkey || user.pivkey == '') { res.send({ error: true, message: 'Enter valid private key' }); return false; };
+        var key = user.pivkey;
         var loginUser = user.username.trim(); 
         var username = loginUser.toLowerCase();
         breej.getAccount(username, function (error, account) {

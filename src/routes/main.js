@@ -40,13 +40,8 @@ router.get('', async (req, res) => {
   if (promotedData.length > 0) finalData.splice(1, 0, promotedData[0]); 
   if (promotedData.length > 1) finalData.splice(5, 0, promotedData[1]); 
   if (promotedData.length > 2) finalData.splice(10, 0, promotedData[2]);
-  let _finalData = await Promise.all( finalData.map(async (post) => { 
-    let userAPI = await axios.get(api_url+`/account/${post.author}`); 
-    let ago = moment.utc(post.ts).fromNow(); 
-    return { ...post, user: userAPI.data.json, ago: ago } }) );
-  let nPosts=await axios.get(api_url+`/new/${index}`);
-  let iPosts=nPosts.data; 
-  let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
+  let _finalData = await Promise.all( finalData.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
+  let nPosts=await axios.get(api_url+`/new/${index}`); let iPosts=nPosts.data; let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
   if (sUser && sKey && await validateToken(sUser, sKey)) { loguser = sUser;
     let actAPI = await axios.get(api_url+`/account/${loguser}`);
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
