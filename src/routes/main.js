@@ -64,7 +64,7 @@ router.get('', async (req, res) => {
 
 router.get('/profile/:name', async (req, res) => { 
   breej.getAccount(req.params.name, async function (error, account) {
-    if(account.error){
+    if(error){
       res.redirect('/404');
     } else { 
       let name = req.params.name;
