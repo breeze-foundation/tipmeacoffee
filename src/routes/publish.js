@@ -58,10 +58,18 @@ async function post(req, res) {
     console.log('post share ',author, token)
     if (author && token && await validateToken(author, token)) {
       console.log('post page got in ', author)
-      //console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
       if(spammers.includes(author)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
-      let wifKey = await nkey(token);
-      if(!author){res.send({ error: true, message: 'user authentication fails' }); return false }
+      
+
+
+      let userAPI = await axios.get(api_url+`/account/${author}`);
+      if(!userAPI){console.log('this is author confirmation before posting');res.send({ error: true, message: 'unable to process your publishing' });return false;}
+      let wifKey = await nkey(token); 
+      console.log(userAPI.data)
+      //if (breej.privToPub(wifKey) !== account.pub) {res.send({ error: true, message: 'Unable to validate user' });
+      
+
+      //if(!author){res.send({ error: true, message: 'user authentication fails' }); return false }
       let post = req.body;
       let allowed_tags=/^[a-z\d\_\s]+$/i;
       if (!allowed_tags.test(post.tags)) {res.send({ error: true, message: 'Only alphanumeric tags, no Characters.' });return false}
