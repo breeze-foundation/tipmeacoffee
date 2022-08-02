@@ -41,7 +41,10 @@ $('.share_new_post').click(function(e) {e.preventDefault();
   let category = ($( "#share_cat" ).val()).toLowerCase();
   $(".share_new_post").attr("disabled", true);$('.edit_post_txt').html('Sharing...');
   $.ajax({type: "POST",url: "/postlinks",data: {title: title,tags:metatags,description:post_body,category: category,image:urlImage,exturl:urlInput,type:urlType},
-      success: function(data) {if (data.error == false) {toastr['success']("Link Shared Successfully!");setTimeout(function(){window.location.href = '/post/'+data.author+'/'+data.link;}, 200); } else {toastr['error'](data.message);$(".share_new_post").attr("disabled", false);$('.edit_post_txt').html('Publish');return false} }
+      success: function(data) {if (data.error == false) {toastr['success']("Link Shared Successfully!");setTimeout(function(){window.location.href = '/post/'+data.author+'/'+data.link;}, 200); 
+    } else {toastr['error'](data.message);
+    //$(".share_new_post").attr("disabled", false);
+    $('.edit_post_txt').html('Please solve issue before proceeding!');return false} }
   });
 })
 
