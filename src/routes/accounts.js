@@ -41,7 +41,7 @@ async function signup(req, res) {
         if (inputName.length < 5) { res.send({ error: true, message: 'Username length should not be less than 5' }); return false; };
         if (!emailValidator.validate(post.email)) { res.send({ error: true, message: 'Not a valid email address' }); return false; };
         breej.getAccounts([inputName], function (error, accounts) {
-            if(error){res.send({ error: true, message: 'Some issue' }); return false }
+            //if(error){res.send({ error: true, message: 'Some issue' }); return false }
             if (!accounts || accounts.length === 0) {
                 db.collection('users').findOne({ email: uEmail }, function (err, user) {
                     if (user) {
@@ -85,7 +85,7 @@ async function keygen(req, res) {
         let post = req.body; let allowed_name = /^[0-9a-z]+$/; if (!post.name.match(allowed_name)) { res.send({ error: true, message: 'Only alphanumeric usernames allowed (all lowercase)' }); return false; };
         if (post.name.length < 5) { res.send({ error: true, message: 'Username length should not be less than 5' }); return false; };
         breej.getAccounts([post.name], function (error, accounts) {
-            if(error){res.send({ error: true, message: 'Some issue' }); return false }
+            //if(error){res.send({ error: true, message: 'Some issue' }); return false }
             if (!accounts || accounts.length === 0) {
                 let ref = ''; let Uname = escape(req.body.name);
                 db.collection('users').updateOne({ username: Uname }, { $set: { isvarified: true } })
