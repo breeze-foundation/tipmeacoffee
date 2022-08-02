@@ -115,7 +115,8 @@ router.get('/profile/:name', async (req, res) => {
       } else {
         res.redirect('/404');
       }
-    }})
+    }
+  })
 })
 
 router.get('/tags/:tag', async (req, res) => {

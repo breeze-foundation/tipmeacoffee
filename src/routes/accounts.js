@@ -87,7 +87,10 @@ async function signup(req, res) {
 
 async function verify(req, res) {
     try {
-        let vtoken = escape(req.params.token); let token = req.cookies.token; let user = req.cookies.breeze_username; let nTags = await fetchTags();
+        let vtoken = escape(req.params.token); 
+        let token = req.cookies.token; 
+        let user = req.cookies.breeze_username; 
+        let nTags = await fetchTags();
         if (token && await validateToken(req.cookies.breeze_username, req.cookies.token)) {
             res.redirect('/profile/' + user);
         } else {
