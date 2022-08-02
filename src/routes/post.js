@@ -14,22 +14,64 @@ const validateToken = async(username, token) => {if(!username || !token) return 
 
 async function page(req, res) {
     try {
-        let author = req.params.name; let link = req.params.link; 
+        let author = req.params.name; let link = req.params.link;
+        let nTags = await fetchTags(); 
         //console.log('post page author is ', author);
-        let nTags = await fetchTags(); let postAPI = await axios.get(api_url+`/content/${author}/${link}`);
+        breej.getContent(author, link, async(error, content) => {
+            if(error) {
+                res.redirect('/404');
+            } else {
+                console.log(content)
+                let post_title = content.json.title; res.locals.title = post_title;
+                let post_body = content.json.body.replace(/"/g, "'"); 
+                let post_description = post_body.split(" ").splice(0,20).join(" ").replace(/\s+((?=\<)|(?=$))/g, ' ').replace(/(?:&nbsp;|<br>)/g,''); 
+                res.locals.description = post_description.replace(/(<([^>]+)>)/gi, '').replace(/\s\s+/g, ' ');
+                let post_link = content._id;res.locals.link='https://tipmeacoffee.com/post/'+post_link;
+                let post_img = content.json.image;res.locals.image=post_img;
+                let newUrl = tldts.parse(content.json.url); let domain=newUrl.domain;
+                let userAPI = await axios.get(api_url+`/account/${content.author}`);
+                if(req.cookies.breeze_username){
+                    loguser=req.cookies.breeze_username;
+                    let actAPI = await axios.get(api_url+`/account/${loguser}`);
+                    res.render('post', {
+                        article: content, 
+                        moment: moment, 
+                        trendingTags: nTags, 
+                        loguser: loguser, 
+                        acct: actAPI.data, 
+                        user: userAPI.data, 
+                        category: category,
+                        notices:'0', 
+                        domain: domain 
+                    })
+                } else{
+                    loguser=''; 
+                    console.log('no log')
+                    res.render('post', { 
+                        article: content,  
+                        moment: moment, 
+                        trendingTags: nTags, 
+                        loguser: loguser, 
+                        user: userAPI.data, 
+                        category: category, 
+                        domain: domain 
+                    }) 
+                }
+            }
+
+            
+        })
+        /*
+        //let postAPI = await axios.get(api_url+`/content/${author}/${link}`);
   		let post_category = postAPI.data.json.category; 
   		let simAPI = await axios.get(api_url+`/new?category=${post_category}`);
   		let userAPI = await axios.get(api_url+`/account/${author}`); 
-  		let post_title = postAPI.data.json.title; res.locals.title = post_title;
-  		let post_body = postAPI.data.json.body.replace(/"/g, "'"); 
-  		let post_description = post_body.split(" ").splice(0,20).join(" ").replace(/\s+((?=\<)|(?=$))/g, ' ').replace(/(?:&nbsp;|<br>)/g,''); 
-  		res.locals.description = post_description.replace(/(<([^>]+)>)/gi, '').replace(/\s\s+/g, ' ');
-  		let post_link = postAPI.data._id;res.locals.link='https://tipmeacoffee.com/post/'+post_link;
-  		let post_img = postAPI.data.json.image;res.locals.image=post_img;
-        let newUrl = tldts.parse(postAPI.data.json.url); let domain=newUrl.domain;
-  		if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { loguser = req.cookies.breeze_username;let actAPI = await axios.get(api_url+`/account/${loguser}`);
+  		if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
+        loguser = req.cookies.breeze_username;
+        let actAPI = await axios.get(api_url+`/account/${loguser}`);
         //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
         res.render('post', {article: postAPI.data, simPosts: simAPI.data, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, user: userAPI.data, category: category,notices:'0', domain: domain }) } else { loguser = ""; res.render('post', { article: postAPI.data, simPosts: simAPI.data, moment: moment, trendingTags: nTags, loguser: loguser, user: userAPI.data, category: category, domain: domain }) }
+        */
     } catch (error) { console.log(error);res.send({ error: true, message: error['error'] }) }
 }
 
