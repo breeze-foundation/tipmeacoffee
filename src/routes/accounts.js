@@ -43,7 +43,7 @@ async function signup(req, res) {
         let uEmail = escape(req.body.email);
         let checkEmail = await isFakeEmailOnline(uEmail)
         console.log(req.clientIp + ' email address is ' + uEmail)
-        if(checkEmail.isFakeDomain !== false){res.send({ error: true, message: 'Email address not allowed' }); return false }
+        if(checkEmail && checkEmail.isFakeDomain !== false){res.send({ error: true, message: 'Email address not allowed' }); return false }
         let uName = post.name.toLowerCase(); 
         let inputName = uName.trim(); 
         let allowed_name = /^[0-9a-z]+$/; if (!inputName.match(allowed_name)) { res.send({ error: true, message: 'Only alphanumeric usernames allowed (all lowercase)' }); return false; };
