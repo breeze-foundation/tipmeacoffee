@@ -24,16 +24,20 @@ async function logout(req, res) { try { res.clearCookie('breeze_username'); res.
 async function login(req, res) {
     try {
         var user = req.body; var key = user.pivkey; var loginUser = user.username.trim(); var username = loginUser.toLowerCase();
-        breej.getAccount(username, function (error, account) {
-            if (error) { res.send({ error: true, message: 'Not a valid user' }); return false }
-            if (account.error) { res.send({ error: true, message: 'Not a valid user' }); return false }
-            try { pubKey = breej.privToPub(key) } catch (e) { res.send({ error: true, message: 'Password (privkey) seems incorrect' }); return }
-            if (account.pub !== pubKey) { res.send({ error: true, message: 'Password (privkey) validation fails' }); } else {
-                var encrypted = CryptoJS.AES.encrypt(key, msgkey, { iv: iv }); var token = encrypted.toString();
-                res.cookie('breeze_username', username, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
-                res.cookie('token', token, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
-                res.send({ error: false });
-            }
+        //breej.getAccount(username, function (error, account) {
+        breej.getAccounts([username], function (error, accounts) {
+            if(error){res.send({ error: true, message: 'Some issue' }); return false }
+            if (!accounts || accounts.length === 0) { res.send({ error: true, message: 'Not a valid user' }); return false }
+            //if (account.error) { res.send({ error: true, message: 'Not a valid user' }); return false }
+            if (accounts && accounts[0].name == username) {
+                try { pubKey = breej.privToPub(key) } catch (e) { res.send({ error: true, message: 'Password (privkey) seems incorrect' }); return }
+                if (account.pub !== pubKey) { res.send({ error: true, message: 'Password (privkey) validation fails' }); } else {
+                    var encrypted = CryptoJS.AES.encrypt(key, msgkey, { iv: iv }); var token = encrypted.toString();
+                    res.cookie('breeze_username', username, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
+                    res.cookie('token', token, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
+                    res.send({ error: false });
+                }
+            }else{res.send({ error: true, message: 'user does not exist' }); return false }
         })
     } catch (error) { res.send({ error: true, message: error['error'] }) }
 }
@@ -42,7 +46,7 @@ async function signup(req, res) {
         let post = req.body; 
         let uEmail = escape(req.body.email);
         let checkEmail = await isFakeEmailOnline(uEmail)
-        console.log(req.clientIp + 'email address is ' + uEmail)
+        console.log(req.clientIp + ' email address is ' + uEmail)
         if(checkEmail.isFakeDomain !== false){res.send({ error: true, message: 'Email address not allowed' }); return false }
         let uName = post.name.toLowerCase(); 
         let inputName = uName.trim(); 
