@@ -24,7 +24,8 @@ var spammers = fs.readFileSync('./src/views/common/spammers.txt').toString().spl
 
 async function share(req, res) {
   try {
-    if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { let post = req.body;let uname=req.cookies.breeze_username.trim();
+    if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
+      let post = req.body;let uname=req.cookies.breeze_username.trim();
       if(spammers.includes(uname)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;} 
       if (!isUrl(post.url)) {res.send({ error: true, message: 'Not a valid URL' });
       } else {let newUrl = tldts.parse(post.url); let domainName=newUrl.domain;
@@ -52,12 +53,12 @@ const addFile = async (fileName, filePath) => {
   return fileHash
 }
 async function post(req, res) {
-  try {
-    if (await validateToken(req.cookies.breeze_username, req.cookies.token)) {
+  try {let author = req.cookies.breeze_username;let token = req.cookies.token;
+    console.log(author, token)
+    if (author && token && await validateToken(author, token)) {
       //console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
-      if(spammers.includes(req.cookies.breeze_username)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
-      let token = req.cookies.token;let wifKey = await nkey(req.cookies.token);
-      let author = req.cookies.breeze_username;
+      if(spammers.includes(author)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
+      let wifKey = await nkey(token);
       if(!author){res.send({ error: true, message: 'user authentication fails' }); return false }
       let post = req.body;
       let allowed_tags=/^[a-z\d\_\s]+$/i;
@@ -140,7 +141,7 @@ async function post(req, res) {
           })
         }
       }
-    } else { res.send({ error: true, message: 'phew.. User Validation Fails. You must be logi' }); }
+    } else { res.send({ error: true, message: 'phew.. User Validation Fails. You must be login' }); }
   } catch (err) { console.log(err); res.send({ error: true, message: err }) }
 }
 
