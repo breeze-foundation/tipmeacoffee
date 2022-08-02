@@ -41,24 +41,24 @@ router.get('', async (req, res) => {
     let userAPI = await axios.get(api_url+`/account/${post.author}`); 
     let ago = moment.utc(post.ts).fromNow(); 
     return { ...post, user: userAPI.data.json, ago: ago } }) );
-  //let nPosts=await axios.get(api_url+`/new/${index}`);
-  //let iPosts=nPosts.data; 
-  //let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
+    let nPosts=await axios.get(api_url+`/new/${index}`);
+    let iPosts=nPosts.data; 
+    let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
   if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
     loguser = req.cookies.breeze_username;
-    //let actAPI = await axios.get(api_url+`/account/${loguser}`);
-    //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
-    //if(index == 0){ 
+      let actAPI = await axios.get(api_url+`/account/${loguser}`);
+      let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
+      if(index == 0){ 
       res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) 
-    //} else {
-    //  res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
+      } else {
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
   } else { 
     loguser = ""; 
-    //if(index == 0) 
-    //{
+    if(index == 0) 
+    {
       res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0' }) 
-    //} else { 
-    //  res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
+    } else { 
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
   }
 })
 
