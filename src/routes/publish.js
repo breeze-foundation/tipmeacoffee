@@ -67,7 +67,7 @@ async function post(req, res) {
       if(!userAPI){console.log('this is author confirmation before posting');res.send({ error: true, message: 'unable to process your publishing' });return false;}
       let wifKey = await nkey(token); let actPub = userAPI.data.pub;
       console.log(userAPI.data.pub)
-      if (breej.privToPub(wifKey) !== actPub) {console.log('looks problem for user validation', author); res.send({ error: true, message: 'Unable to validate user' });return false;}
+      if (breej.privToPub(wifKey) !== actPub) {console.log('looks problem for user validation', author); res.send({ error: true, message: 'Unable to validate user' });return false;}else{console.log('user passes validation for posting', author)}
       
 
       //if(!author){res.send({ error: true, message: 'user authentication fails' }); return false }
