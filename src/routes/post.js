@@ -16,9 +16,9 @@ async function page(req, res) {
     try {
         let author = req.params.name; let link = req.params.link;
         let nTags = await fetchTags(); 
-        console.log('post page loaded ', author);
         breej.getContent(author, link, async(error, content) => {
             if(error) {
+                console.log('post link with error by', author);
                 res.redirect('/404');
             } else {
                 let post_title = content.json.title; res.locals.title = post_title;
