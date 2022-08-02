@@ -15,7 +15,6 @@ var msgkey = process.env.msgKey; var iv = process.env.breezval;
 const router = express.Router()
 const helper = require('./helper')
 const api_url = helper.api
-const api_main_url = 'https://api.breezechain.org';
 const fetchTags = helper.getTags
 const category = helper.categories
 const clfeed = require('./clfeed')
@@ -25,10 +24,13 @@ const validateToken = async(username, token) => {if(!username || !token) return 
 const nkey = async(token) => {try{let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let uKey = decrypted.toString(CryptoJS.enc.Utf8);return uKey;}catch(err){return false;} }
 var spammers = fs.readFileSync('./src/views/common/spammers.txt').toString().split("\n");
 
+
 router.get('', async (req, res) => { 
   res.locals.title='Tip Me A Coffee - Social Media on Blockchain'; 
   res.locals.description='TipMeACoffee - A social media platform built on blockchain where you share to earn TMAC tokens. Share what you like - Earn if community likes it.';
   let index = req.query.index | 0; 
+  let sData = req.cookies; let sUser = sData.breeze_username; let sKey = sData.token;
+  console.log(sUser, sKey)
   let postsAPI = await axios.get(api_url+`/new/${index}`); 
   let nTags = await fetchTags(); 
   let promotedAPI = await axios.get(api_url+`/promoted`); 
@@ -42,24 +44,23 @@ router.get('', async (req, res) => {
     let userAPI = await axios.get(api_url+`/account/${post.author}`); 
     let ago = moment.utc(post.ts).fromNow(); 
     return { ...post, user: userAPI.data.json, ago: ago } }) );
-  //let nPosts=await axios.get(api_url+`/new/${index}`);
-  //let iPosts=nPosts.data; 
-  //let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
-  if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
-    loguser = req.cookies.breeze_username;
-    //let actAPI = await axios.get(api_url+`/account/${loguser}`);
+  let nPosts=await axios.get(api_url+`/new/${index}`);
+  let iPosts=nPosts.data; 
+  let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
+  if (await validateToken(sUser, sKey)) { loguser = sUser;
+    let actAPI = await axios.get(api_url+`/account/${loguser}`);
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
-    //if(index == 0){ 
+    if(index == 0){ 
       res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices: '0' }) 
-    //} else {
-    //  res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
+    } else {
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'}); }
   } else { 
     loguser = ""; 
-    //if(index == 0) 
-    //{
+    if(index == 0) 
+    {
       res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0' }) 
-    //} else { 
-    //  res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
+    } else { 
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: category, notices:'0'});}
   }
 })
 
