@@ -68,6 +68,7 @@ router.get('/profile/:name', async (req, res) => {
       res.redirect('/404');
     } else { 
       let name = req.params.name;
+      console.log(name)
       if(name && name !==''){
         res.locals.baseUrl=getBaseUrl;
         res.locals.title= name.charAt(0).toUpperCase() + name.slice(1) +' Profile - TipMeACoffee';
