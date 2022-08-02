@@ -24,6 +24,7 @@ var spammers = fs.readFileSync('./src/views/common/spammers.txt').toString().spl
 
 async function share(req, res) {
   try {let post = req.body;let author = req.cookies.breeze_username;let token = req.cookies.token;
+    breej.getAccount(username, function (error, account) {
     console.log('link share ', author, token)
     if (author && token && await validateToken(author, token)) { let uname=author.trim();
       if(spammers.includes(uname)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;} 
@@ -56,6 +57,7 @@ async function post(req, res) {
   try {let author = req.cookies.breeze_username;let token = req.cookies.token;
     console.log('post share ',author, token)
     if (author && token && await validateToken(author, token)) {
+      console.log('post page got in ', author)
       //console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
       if(spammers.includes(author)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
       let wifKey = await nkey(token);
