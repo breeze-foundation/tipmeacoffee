@@ -5,7 +5,8 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const nodemailer = require("nodemailer");
 const breej = require('breej')
-const CryptoJS = require("crypto-js");
+const CryptoJS = require("crypto-js")
+const { isFakeEmailOnline } = require('fakefilter')
 
 const db_url = process.env.MONGOLAB_URI; //|| 'mongodb://localhost:27017/tipmeacoffee';
 const dbName = 'besocial'; var db;
@@ -37,7 +38,13 @@ async function login(req, res) {
 }
 async function signup(req, res) {
     try {
-        let post = req.body; let uEmail = escape(req.body.email); let uName = post.name.toLowerCase(); let inputName = uName.trim(); let allowed_name = /^[0-9a-z]+$/; if (!inputName.match(allowed_name)) { res.send({ error: true, message: 'Only alphanumeric usernames allowed (all lowercase)' }); return false; };
+        let post = req.body; 
+        let uEmail = escape(req.body.email); 
+        let checkEmail = await isFakeEmailOnline(uEmail)
+        if(checkEmail.isFakeDomain !== false){res.send({ error: true, message: 'Email address not allowed' }); return false }
+        let uName = post.name.toLowerCase(); 
+        let inputName = uName.trim(); 
+        let allowed_name = /^[0-9a-z]+$/; if (!inputName.match(allowed_name)) { res.send({ error: true, message: 'Only alphanumeric usernames allowed (all lowercase)' }); return false; };
         if (inputName.length < 5) { res.send({ error: true, message: 'Username length should not be less than 5' }); return false; };
         if (!emailValidator.validate(post.email)) { res.send({ error: true, message: 'Not a valid email address' }); return false; };
         breej.getAccounts([inputName], function (error, accounts) {
