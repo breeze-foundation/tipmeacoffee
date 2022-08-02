@@ -23,9 +23,9 @@ const msgkey = process.env.msgKey; const iv = process.env.breezval;
 var spammers = fs.readFileSync('./src/views/common/spammers.txt').toString().split("\n");
 
 async function share(req, res) {
-  try {
-    if (await validateToken(req.cookies.breeze_username, req.cookies.token)) { 
-      let post = req.body;let uname=req.cookies.breeze_username.trim();
+  try {let post = req.body;let author = req.cookies.breeze_username;let token = req.cookies.token;
+    console.log('link share ', author, token)
+    if (author && token && await validateToken(author, token)) { let uname=author.trim();
       if(spammers.includes(uname)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;} 
       if (!isUrl(post.url)) {res.send({ error: true, message: 'Not a valid URL' });
       } else {let newUrl = tldts.parse(post.url); let domainName=newUrl.domain;
@@ -54,7 +54,7 @@ const addFile = async (fileName, filePath) => {
 }
 async function post(req, res) {
   try {let author = req.cookies.breeze_username;let token = req.cookies.token;
-    console.log(author, token)
+    console.log('post share ',author, token)
     if (author && token && await validateToken(author, token)) {
       //console.log(req.clientIp + ' author is ' + req.cookies.breeze_username)
       if(spammers.includes(author)){res.send({ error: true, message: 'You are not allowed to post due to spamming!' });return false;}
