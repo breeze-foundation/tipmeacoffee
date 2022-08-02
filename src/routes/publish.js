@@ -22,7 +22,7 @@ const validateToken = async(username, token) => {if(!username || !token) return 
 const nkey = async(token) => {try{let decrypted = CryptoJS.AES.decrypt(token, msgkey, { iv: iv }); let uKey = decrypted.toString(CryptoJS.enc.Utf8);return uKey;}catch(err){return false;} }
 const msgkey = process.env.msgKey; const iv = process.env.breezval;
 var spammers = fs.readFileSync('./src/views/common/spammers.txt').toString().split("\n");
-
+const api_url = 'https://api.breezechain.org'; 
 async function share(req, res) {
   try {let post = req.body;let author = req.cookies.breeze_username;let token = req.cookies.token;
     //breej.getAccount(username, function (error, account) {
