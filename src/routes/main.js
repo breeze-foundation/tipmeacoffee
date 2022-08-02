@@ -47,7 +47,7 @@ router.get('', async (req, res) => {
   let nPosts=await axios.get(api_url+`/new/${index}`);
   let iPosts=nPosts.data; 
   let sPosts = await Promise.all( iPosts.map(async (post) => { let userAPI = await axios.get(api_url+`/account/${post.author}`); let ago = moment.utc(post.ts).fromNow(); return { ...post, user: userAPI.data.json, ago: ago } }) );
-  if (await validateToken(sUser, sKey)) { loguser = sUser;
+  if (sUser && sKey && await validateToken(sUser, sKey)) { loguser = sUser;
     let actAPI = await axios.get(api_url+`/account/${loguser}`);
     //let noticeAPI = await axios.get(api_url+`/unreadnotifycount/${loguser}`); 
     if(index == 0){ 
