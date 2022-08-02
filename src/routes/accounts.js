@@ -22,21 +22,33 @@ MongoClient.connect(db_url, function (err, client) { assert.equal(null, err); co
 async function logout(req, res) { try { res.clearCookie('breeze_username'); res.clearCookie('token'); res.send({ error: false }); } catch (error) { res.send({ error: true, message: error['error'] }) } }
 
 async function login(req, res) {
-    try {
-        var user = req.body; var key = user.pivkey; var loginUser = user.username.trim(); var username = loginUser.toLowerCase();
+    //try {
+        var user = req.body; 
+        var key = user.pivkey; 
+        var loginUser = user.username.trim(); 
+        var username = loginUser.toLowerCase();
         breej.getAccount(username, function (error, account) {
             if (error) { console.log('login error'); res.send({ error: true, message: 'Not a valid user' }); return false }
-            if (account.error) { res.send({ error: true, message: 'Not a valid user' }); return false }
-            try { pubKey = breej.privToPub(key) } catch (e) { res.send({ error: true, message: 'Password (privkey) seems incorrect' }); return }
-            if (account.pub !== pubKey) { res.send({ error: true, message: 'Password (privkey) validation fails' }); } else {
-                var encrypted = CryptoJS.AES.encrypt(key, msgkey, { iv: iv }); var token = encrypted.toString();
-                res.cookie('breeze_username', username, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
-                res.cookie('token', token, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
-                res.send({ error: false });
-            }
+            if(account && account.name){
+                try { 
+                    pubKey = breej.privToPub(key) 
+                } catch (e) {
+                    res.send({ error: true, message: 'Password (privkey) seems incorrect' }); 
+                    return 
+                }
+                if (account.pub !== pubKey) { 
+                    res.send({ error: true, message: 'Password (privkey) validation fails' }); 
+                } else {
+                    var encrypted = CryptoJS.AES.encrypt(key, msgkey, { iv: iv }); var token = encrypted.toString();
+                    res.cookie('breeze_username', username, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
+                    res.cookie('token', token, { expires: new Date(Date.now() + 86400000000), httpOnly: true });
+                    res.send({ error: false });
+                }
+            } else {console.log('account fails')} 
         })
-    } catch (error) { res.send({ error: true, message: error['error'] }) }
+    //} catch (error) { res.send({ error: true, message: error['error'] }) }
 }
+
 async function signup(req, res) {
     try {
         let post = req.body; 
