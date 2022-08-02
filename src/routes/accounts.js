@@ -41,7 +41,6 @@ async function signup(req, res) {
         let post = req.body; 
         let uEmail = escape(req.body.email);
         let checkEmail = await isFakeEmailOnline(uEmail)
-        console.log(checkEmail.isFakeDomain)
         console.log(req.clientIp + 'email address is ' + uEmail)
         if(checkEmail.isFakeDomain !== false){res.send({ error: true, message: 'Email address not allowed' }); return false }
         let uName = post.name.toLowerCase(); 
