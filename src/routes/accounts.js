@@ -25,6 +25,7 @@ async function login(req, res) {
     try {
         var user = req.body; var key = user.pivkey; var loginUser = user.username.trim(); var username = loginUser.toLowerCase();
         breej.getAccount(username, function (error, account) {
+            if (error) { res.send({ error: true, message: 'Not a valid user' }); return false }
             if (account.error) { res.send({ error: true, message: 'Not a valid user' }); return false }
             try { pubKey = breej.privToPub(key) } catch (e) { res.send({ error: true, message: 'Password (privkey) seems incorrect' }); return }
             if (account.pub !== pubKey) { res.send({ error: true, message: 'Password (privkey) validation fails' }); } else {
