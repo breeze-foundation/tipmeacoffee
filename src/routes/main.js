@@ -15,7 +15,6 @@ var msgkey = process.env.msgKey; var iv = process.env.breezval;
 const router = express.Router()
 const helper = require('./helper')
 const api_url = helper.api
-const api_main_url = 'https://api.breezechain.org';
 const fetchTags = helper.getTags
 const category = helper.categories
 const clfeed = require('./clfeed')
