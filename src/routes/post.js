@@ -16,12 +16,11 @@ async function page(req, res) {
     try {
         let author = req.params.name; let link = req.params.link;
         let nTags = await fetchTags(); 
-        //console.log('post page author is ', author);
+        console.log('post page loaded ', author);
         breej.getContent(author, link, async(error, content) => {
             if(error) {
                 res.redirect('/404');
             } else {
-                console.log(content)
                 let post_title = content.json.title; res.locals.title = post_title;
                 let post_body = content.json.body.replace(/"/g, "'"); 
                 let post_description = post_body.split(" ").splice(0,20).join(" ").replace(/\s+((?=\<)|(?=$))/g, ' ').replace(/(?:&nbsp;|<br>)/g,''); 
@@ -45,8 +44,7 @@ async function page(req, res) {
                         domain: domain 
                     })
                 } else{
-                    loguser=''; 
-                    console.log('no log')
+                    loguser='';
                     res.render('post', { 
                         article: content,  
                         moment: moment, 
@@ -58,8 +56,6 @@ async function page(req, res) {
                     }) 
                 }
             }
-
-            
         })
         /*
         //let postAPI = await axios.get(api_url+`/content/${author}/${link}`);
