@@ -66,7 +66,7 @@ async function post(req, res) {
       let userAPI = await axios.get(api_url+`/account/${author}`);
       if(!userAPI){console.log('this is author confirmation before posting');res.send({ error: true, message: 'unable to process your publishing' });return false;}
       let wifKey = await nkey(token); 
-      console.log(userAPI.data)
+      console.log(userAPI.data.pub)
       //if (breej.privToPub(wifKey) !== account.pub) {res.send({ error: true, message: 'Unable to validate user' });
       
 
