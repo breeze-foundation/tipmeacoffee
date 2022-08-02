@@ -25,6 +25,7 @@ async function login(req, res) {
     try {
         var user = req.body; var key = user.pivkey; var loginUser = user.username.trim(); var username = loginUser.toLowerCase();
         //breej.getAccount(username, function (error, account) {
+        console.log(username)
         breej.getAccounts([username], function (error, accounts) {
             if(error){res.send({ error: true, message: 'Some issue' }); return false }
             if (!accounts || accounts.length === 0) { res.send({ error: true, message: 'Not a valid user' }); return false }
