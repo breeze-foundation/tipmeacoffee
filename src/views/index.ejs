@@ -1,7 +1,26 @@
 <%- include('./common/header') %>
-<div id="root"><div class="body-wrap" style=""><main class="main">
-<div class="middle-section ms-width">
-<div class="Home-wrapper"><%- include('./common/topnav') %><div class="explore-nav-menu"><div class="explore-nav-item activeTab">Latest</div><div class="explore-nav-item" onclick="window.location.href='/trending'">Trending</div></div><%- include('./common/home')%></div>
+<div id="root"><div class="body-wrap" style="">
+	<main class="main">
+		<div class="middle-section ms-width">
+		<div class="Home-wrapper"><%- include('./common/topnav') %>
+			<div class="pin-it">
+				<div class="pin-icon">
+					<img src="https://img.icons8.com/ios-glyphs/24/1da1f2/pin.png"/>
+				</div>
+				<div class="pin-it-msg">
+					<span><% if(rain.data.rain && rain.data.rain == 'false'){%>Next Rain coming soon<%}else{ %></span> 
+					
+					<span>Rain of <%- rain.data.data.rain.amount %> TMAC Tokens</span>
+				    <span>
+				        <img src="https://img.icons8.com/cotton/24/null/retro-alarm-clock.png" class="pin-icon" />
+				    </span><%- moment.utc(rain.data.data.rain.end_date).fromNow()%> <%}%>
+				</div>
+			</div>
+			<div class="explore-nav-menu">
+				<div class="explore-nav-item activeTab">Latest</div>
+				<div class="explore-nav-item" onclick="window.location.href='/trending'">Trending</div></div>
+				<%- include('./common/home')%>
+			</div>
 <div class="loader loader-hidden"></div>
 </div><%- include('./common/rnav', {cate: category}) %>
 </main><%- include('./common/lnav', {lnav: "home", notices: notices}) %></div></div>

@@ -4078,3 +4078,4 @@ img:-moz-broken {
 	padding: 20px 0;
 	padding-top: 0;
 }
+.pin-it{display: flex;justify-content: space-between;padding: 6px 12px;background: #fcd535;border-bottom: 1px solid #ccc;align-items: center;}.pin-it-msg {white-space: nowrap;width: 100%;overflow: hidden;text-overflow: ellipsis;font-weight: 600;display: flex;align-items: center;padding-bottom: 5px;padding-left: 5px;}

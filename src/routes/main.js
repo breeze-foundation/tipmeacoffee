@@ -10,6 +10,7 @@ router.get('', async (req, res) => {
   res.locals.title='Tip Me A Coffee - Social Media on Blockchain'; 
   res.locals.description='TipMeACoffee - A social media platform built on blockchain where you share to earn TMAC tokens. Share what you like - Earn if community likes it.';
   let index = req.query.index | 0;
+  let rainAPI = await axios.get(`https://tips.breezechain.org/status`);
   let postsAPI = await axios.get(api_url+`/new/${index}`); 
   let nTags = await fetchTags(); 
   let promotedAPI = await axios.get(api_url+`/promoted`); 
@@ -27,17 +28,17 @@ router.get('', async (req, res) => {
     let actAPI = await axios.get(api_url+`/account/${loguser}`);
     const notice = await getNotices(loguser); if(notice==null){ return res.status(404).redirect('/404') }else{ notices = notice.count }
     if(index == 0){ 
-      res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, category: categoryList, notices: notices }) 
+      res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, acct: actAPI.data, category: categoryList, notices: notices, rain: rainAPI }) 
     } else {
-      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: categoryList, notices: notices}); 
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: categoryList, notices: notices, rain: rainAPI}); 
     }
   } else { 
     loguser = ""; 
     if(index == 0) 
     {
-      res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: categoryList, notices: '0' }) 
+      res.render('index', { articles: _finalData, moment: moment, trendingTags: nTags, loguser: loguser, category: categoryList, notices: '0',rain: rainAPI }) 
     } else { 
-      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: categoryList});
+      res.send({articles: sPosts, moment: moment, trendingTags: nTags, loguser: loguser, category: categoryList,rain: rainAPI});
     }
   }
 })
