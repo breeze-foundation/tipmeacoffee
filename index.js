@@ -55,6 +55,7 @@ app.use('/css', express.static(__dirname + 'public/css'))
 app.use('/images', express.static(__dirname + 'public/images'))
 app.use('/js', express.static(__dirname + 'public/js'))
 app.use('/uploads', express.static(__dirname + 'public/uploads'))
+app.use('/ads.txt', express.static(__dirname + 'public/ads.txt'))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }))
