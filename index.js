@@ -28,7 +28,7 @@ require('dotenv').config();
 const { connectDatabase } = require("./src/utils/db");
 connectDatabase().then(() => {console.log("Connected to DB. Initializing client."); });
 
-global.api_url = 'https://api.breezechain.org';
+global.api_url = 'https://api.tipmeacoffee.com';
 const { apiCheck } = require('./src/utils/apiCheck')
 app.use(apiCheck)
 breej.init({ api: api_url, bwGrowth: 36000000000, vpGrowth: 120000000000 })

@@ -4,14 +4,14 @@
     <main class="main">
       <div class="middle-section ms-width">
         <div class="Home-wrapper"> <%- include('./common/topnav') %>
-          <div class="editor_section" style="margin: 3em 2em 0em 2em;">
+          <!-- <div class="editor_section" style="margin: 3em 2em 0em 2em;" style="display:none;">
             <h3 style="text-align: center;padding-bottom: 30px;">Share What You Like...</h3>
             <div id="editor-container" class="ql-editor"></div>
             <img id="postImg" src="" />
             <input type="hidden" id="filename" name="filename" value="">
             <input type="file" name="fileInput" id="fileInput" accept=".jpg, .jpeg, .png" style="display: none;" />
           </div> 
-          <div class="share_options">
+          <div class="share_options"  style="display:none;">
             <div style="margin-top: 3rem;display: flex;justify-content: space-between;padding: 20px;margin:0px 20px;align-items: center;">
               <div>
                 <button class="post_options" id="image-button" onclick="chooseFile();">
@@ -29,11 +29,14 @@
               <button type="button" class="btn_pg add_post" style="width:25%;background: #1da1f2;border: 1px solid rgb(29 161 242);border-radius: 12px;color:#fff;margin:5px"><span class="add_post_txt">POST</span></button>
             </div>
             <div class="wel_sec_msg">Must read<span class="share_help"> <a href="/tos"> Terms &amp; Conditions</a></span>  for sharing!</div>
-          </div>
-          <div class="share_link" style="display:none;">
-              <div class="share-block"><h4 class="share_sec_title"></h4></div>
-              <div class="form-group"><input type="text" class="form-control" id="url_field" required="true" placeholder="Enter URL"></div>
-              <div class="wel_sec"><button type="button" class="Nav-entry-link share_me"><span class="Nav-main-btn" id="share_plus">Share</span></button></div>
+          </div> -->
+          
+          <div class="share_link">
+            <h3 style="text-align: center;padding-bottom: 30px;">Share What You Like...</h3>
+            <div class="share-block"><h4 class="share_sec_title"></h4></div>
+            <div class="form-group"><input type="text" class="form-control" id="url_field" required="true" placeholder="Enter URL"></div>
+            <div class="wel_sec"><button type="button" class="Nav-entry-link share_me"><span class="Nav-main-btn" id="share_plus">Share</span></button></div>
+            <div class="wel_sec_msg">Must read<span class="share_help"> <a href="/tos"> Terms &amp; Conditions</a></span>  for sharing!</div>
           </div> 
           <div class="edit_psot" style="display: none;">
               <input type="hidden" name="url_link" class="url_link" value="">
