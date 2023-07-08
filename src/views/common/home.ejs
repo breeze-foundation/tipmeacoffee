@@ -11,14 +11,17 @@
       if(article.json.type==3){%><div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>"><p><%- content %></p></div>
       <%}else if(article.json.type==2){%><div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>"><p><%- content %></p></div><div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- article.json.image %>" /></div></a></div>
       <%}else if(article.json.type==1){%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
+      <div class="post-content" style="margin-bottom: 1px;"><p><%- article.json.body %> ...</p></div>
       <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
       <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>">
       <div class="card-image-link"><iframe width="100%" height="auto" style="border: none;border-radius: 14px;min-height: 255px;" src="https://youtube.com/embed/<%-article.json.videoid%>?mute=1"></iframe></div></a></div>
       <%}else if(article.json.type==0){ if(!article.json.image || article.json.image === undefined){var iimg='/images/img-tmac.png';}else{var iimg=article.json.image;};%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
+      <div class="post-content" style="margin-bottom: 1px;"><p><%- article.json.body %> ...</p></div>
       <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
       <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- iimg %>" /></div></a></div>
       <%}%>
     <%}else{%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
+    <div class="post-content" style="margin-bottom: 1px;"><p><%- article.json.body %> ...</p></div>
     <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
     <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- article.json.image %>" /></div></a></div>
     <%}%>

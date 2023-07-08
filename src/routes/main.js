@@ -11,6 +11,7 @@ router.get('', async (req, res) => {
   res.locals.description='TipMeACoffee - A social media platform built on blockchain where you share to earn TMAC tokens. Share what you like - Earn if community likes it.';
   let index = req.query.index | 0;
   let rainAPI = await axios.get(`https://tips.breezechain.org/status`);
+  //console.log(rainAPI)
   let postsAPI = await axios.get(api_url+`/new/${index}`); 
   let nTags = await fetchTags(); 
   let promotedAPI = await axios.get(api_url+`/promoted`); 
