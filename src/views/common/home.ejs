@@ -8,17 +8,40 @@
   <div class="card-content-wrapper">
     <div class="card-content-header"><div class="card-header-detail"><span class="card-header-username"><a href="/profile/<%- article.author %>">@<b><%- article.author %></b></a></span><span><small> in</small><a href="/category/<%- (article.json.category).toLowerCase() %>" class="card_home_cat"> <%- category %></a></span><% if(!(article.__promoted)) {%><span class="card-header-dot">-</span><span class="card-header-date"><%- moment.utc(article.ts).fromNow()%></span><% } %></div></div>
     <%if(article.json && article.json.type){var hashregex = /(^|\B)#(?![0-9_]+\b)([a-zA-Z0-9_]{1,30})(\b|\r)/g;var content=article.json.body;var ptags = content.match(hashregex);if(ptags){for(var i = 0, l = ptags.length; i < l; i++ ){content=content.replace(ptags[i], '<a style="color:rgb(0 43 255)" href="/tags/'+ptags[i].replace(/#/g, '').toLowerCase()+'">'+ptags[i]+'</a>');};};
-      if(article.json.type==3){%><div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>"><p><%- content %></p></div>
+      if(article.json.type==3){%>
+        <div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>"><p><%- content %></p></div>
       <%}else if(article.json.type==2){%><div class="post-content" data-permlink="<%- article.link %>" data-author="<%- article.author %>"><p><%- content %></p></div><div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- article.json.image %>" /></div></a></div>
       <%}else if(article.json.type==1){%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
       <div class="post-content" style="margin-bottom: 1px;"><p><%- article.json.body %> ...</p></div>
       <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
       <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>">
       <div class="card-image-link"><iframe width="100%" height="auto" style="border: none;border-radius: 14px;min-height: 255px;" src="https://youtube.com/embed/<%-article.json.videoid%>?mute=1"></iframe></div></a></div>
-      <%}else if(article.json.type==0){ if(!article.json.image || article.json.image === undefined){var iimg='/images/img-tmac.png';}else{var iimg=article.json.image;};%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
-      <div class="post-content" style="margin-bottom: 1px;"><p><%- article.json.body %> ...</p></div>
-      <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
-      <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- iimg %>" /></div></a></div>
+      <%}else if(article.json.type==4){ %>
+        <div class="card-content-info card_home_title">
+          <a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a>
+          </div>
+        <div class="post-content answer-post-content-home" style="margin-bottom: 1px;">
+          <p><%- article.json.body %> ...</p>
+        </div>
+        
+      <%}else if(article.json.type==0){ 
+        if(
+          !article.json.image || article.json.image === undefined){var iimg='/images/img-tmac.png';
+        }else{
+          var iimg=article.json.image;};
+        %>
+        <div class="card-content-info card_home_title">
+          <a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a>
+          </div>
+        <div class="post-content" style="margin-bottom: 1px;">
+          <p><%- article.json.body %> ...</p>
+          </div>
+        <div class="card-content-info card_home_tags">
+          <%- metatags.toString() %>
+          </div>
+        <div class="card-content-images">
+          <a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- iimg %>" /></div></a>
+        </div>
       <%}%>
     <%}else{%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
     <div class="post-content" style="margin-bottom: 1px;"><p><%- article.json.body %> ...</p></div>

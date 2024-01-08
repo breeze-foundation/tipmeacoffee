@@ -12,7 +12,7 @@
     "publisher": {"@type": "Organization","name": "TipMeACoffee","logo": {"@type": "ImageObject","url":"https://tipmeacoffee.com/images/logo.png"}},
     "description": "<%-(locals.description).replace(/(<([^>]+)>)/gi, "") %>"
   }</script>
-<% let tags = article.json.tags; let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' '); var catg = article.json.category; var post_category = catg.charAt(0).toUpperCase() + catg.slice(1);let upvotes=JSON.stringify(article.votes); 
+<% let tags = article.json?.tags || [];  let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' '); var catg = article.json.category; var post_category = catg.charAt(0).toUpperCase() + catg.slice(1);let upvotes=JSON.stringify(article.votes); 
     if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0}
 %>
 <div id="root"><div class="body-wrap"><main class="main"><div class="middle-section ms-width"><div class="Home-wrapper"><%- include('./common/topnav') %>
