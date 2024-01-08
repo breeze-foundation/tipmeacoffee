@@ -1,4 +1,4 @@
-<% articles.forEach(function(article) { let tags = article.json.tags; 
+<% articles.forEach(function(article) { let tags = article.json?.tags || []; 
   let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' '); 
   var catg=article.json.category;var category = catg.charAt(0).toUpperCase() + catg.slice(1);let upvotes=JSON.stringify(article.votes); if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0}%><% if(article.__promoted) { %><div class="promoted_sec"><span class="promoted_icon"><svg width="20px" height="20px" viewBox="0 0 30 30"><path d="M 5 5 L 5 27 L 27 27 L 27 5 Z M 7 7 L 25 7 L 25 25 L 7 25 Z M 13 10 L 13 12 L 18.5625 12 L 9.28125 21.28125 L 10.71875 22.71875 L 20 13.4375 L 20 19 L 22 19 L 22 10 Z" /></svg></span><span class="promoted_title">Promoted</span></div><% } %>
 <div class="inner-card-wrapper">

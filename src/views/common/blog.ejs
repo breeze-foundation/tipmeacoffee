@@ -1,4 +1,4 @@
-<% articles.forEach(function(article) {  let tags = article.json.tags; let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' '); let catg = article.json.category; let category = catg.charAt(0).toUpperCase() + catg.slice(1);let upvotes=JSON.stringify(article.votes);if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0} %>
+<% articles.forEach(function(article) {  let tags = article.json?.tags || []; let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' '); let catg = article.json.category; let category = catg.charAt(0).toUpperCase() + catg.slice(1);let upvotes=JSON.stringify(article.votes);if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0} %>
 <div>
     <div class="inner-card-wrapper">
         <div class="card-userPic-wrapper">
