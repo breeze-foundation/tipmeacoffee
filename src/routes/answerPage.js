@@ -10,7 +10,7 @@ const fetchTags = helper.getTags
 async function answerPage(req, res) {
     let author = req.params.name; let link = req.params.link;
     const content = await getPost(author, link)
-    console.log(content)
+
     if(content==null){ 
         return res.status(404).redirect('/404') 
     }else{ 

@@ -5,7 +5,6 @@ $('.ask_me').click(function() {
     $('.share_link').hide();
     $('.shrim-title').html(input_ask);
     $('.shrim-wrap').show();
-    console.log(input_ask)
   
     $.ajax({url: '/askengine',type: 'POST',data: JSON.stringify({ title: input_ask }),contentType: 'application/json',
       success: function(data, textStatus, jqXHR) {
@@ -18,8 +17,9 @@ $('.ask_me').click(function() {
           $('.share_link').show();
           $('#ask_plus').html('Ask');$(".ask_me").attr("disabled", false).css("cursor", "pointer");return false; 
         } else {
-          console.log(data.output);
-          $('#output').html(data.output);
+          //console.log(data.output);
+          //$('#output').html(data.output);
+          setTimeout(function(){window.location.href = '/search/'+data.author+'/'+data.link;}, 200); 
         }
       }, 
       error: function(jqXHR, textStatus, errorThrown) {
@@ -30,13 +30,13 @@ $('.ask_me').click(function() {
         $('.share_link').show();
         $('#ask_plus').html('Ask');$(".ask_me").attr("disabled", false).css("cursor", "pointer");return false;
       },
-      complete: function() {
-        // Always re-enable the button and reset its state
-        $('.shrim-title').html();
-        $('.shrim-wrap').hide();
-        $('.share_link').show();
-        $('#ask_plus').html('Ask');
-        $(".ask_me").attr("disabled", false).css("cursor", "pointer");
-      } 
+    //   complete: function() {
+    //     // Always re-enable the button and reset its state
+    //     $('.shrim-title').html();
+    //     $('.shrim-wrap').hide();
+    //     $('.share_link').show();
+    //     $('#ask_plus').html('Ask');
+    //     $(".ask_me").attr("disabled", false).css("cursor", "pointer");
+    //   } 
     });
   });

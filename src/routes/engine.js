@@ -44,10 +44,9 @@ async function post(req, res) {
     .then(({ data }) => {
       if (data && data.choices && data.choices[0] && data.choices[0].message) {
         const rawAnswer = data.choices[0].message.content;
-        console.log(rawAnswer)
 
         const answer = marked.parse(rawAnswer)
-        res.send({ output: answer });
+        //res.send({ output: answer });
         
         let content = { title: title, body: answer, category: 'search', type: '4' };
         let newTx = { type: 4, data: { link: permlink, json: content } };
