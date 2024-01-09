@@ -18,7 +18,7 @@
       <div class="card-image-link"><iframe width="100%" height="auto" style="border: none;border-radius: 14px;min-height: 255px;" src="https://youtube.com/embed/<%-article.json.videoid%>?mute=1"></iframe></div></a></div>
       <%}else if(article.json.type==4){ %>
         <div class="card-content-info card_home_title">
-          <a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a>
+          <a href="/search/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a>
           </div>
         <div class="post-content answer-post-content-home" style="margin-bottom: 1px;">
           <p><%- article.json.body %> ...</p>

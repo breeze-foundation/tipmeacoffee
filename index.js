@@ -13,12 +13,15 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const main = require('./src/routes/main');
 const post = require('./src/routes/post');
+const answerRouter = require('./src/routes/answerPage');
 const accountRouter = require('./src/routes/accounts')
 const publish = require('./src/routes/publish')
+const engine = require('./src/routes/engine')
 const walletRouter = require('./src/routes/wallet')
 const profileRouter = require('./src/routes/profile')
 const voteRouter = require('./src/routes/vote')
 const shareRouter = require('./src/routes/share')
+const askRouter = require('./src/routes/ask')
 const catgRouter = require('./src/routes/category')
 const notifyRouter = require('./src/routes/notify')
 const witRouter = require('./src/routes/witness')
@@ -40,7 +43,7 @@ global.nkey = async(token) => {try{let decrypted = CryptoJS.AES.decrypt(token, m
 global.getNotices = async (user) =>{ const response = await fetch(api_url+`/unreadnotifycount/`+user);if (response.status === 200) {return response.json()} else {return null} }
 global.getAccount = async (user) =>{ const response = await fetch(api_url+`/account/`+user); if (response.status === 200) {return response.json()} else {return null} }
 global.getPost = async (user, postLink) =>{ const response = await fetch(api_url+`/content/`+user+`/`+postLink); if (response.status === 200) {return response.json()} else {return null} }
-global.categoryList = ['News','Cryptocurrency','Food','Sports','Technology','Lifestyle','Health','Gaming','Business','General'];
+global.categoryList = ['News','Cryptocurrency','Food','Sports','Technology','Lifestyle','Health','Gaming','Business','General', 'Search'];
 global.spammers = fs.readFileSync('./src/views/common/spammers.txt').toString().split("\n");
 
 const limiter = RateLimit({windowMs: 1*60*1000,max: 1000000,message:'Too many requests'});
@@ -66,7 +69,9 @@ app.set('view engine', 'ejs')
 app.use(cookieParser())
 
 app.use('/post/:name/:link', post.page);
+app.use('/search/:name/:link', answerRouter.answerPage);
 app.use('/sharelinks',publish.share)
+app.use('/askengine',engine.post)
 app.use('/postlinks',publish.post)
 app.use('/loginuser',accountRouter.login)
 app.use('/signup',accountRouter.signup)
@@ -82,6 +87,7 @@ app.use('/follow',profileRouter.follow)
 app.use('/unfollow',profileRouter.unfollow)
 app.use('/upvote', voteLimiter, voteRouter.upvote)
 app.use('/share', shareRouter.newPost)
+app.use('/ask', askRouter.newAsk)
 app.use('/category/:catg', catgRouter.catgPage)
 app.use('/tags/:tag', catgRouter.tagPage)
 app.use('/followCatg', catgRouter.followCatg)

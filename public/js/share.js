@@ -57,6 +57,7 @@ $('#fileInput').change(function(){ var file = this.files[0];
   reader.readAsDataURL(file);
 });
 
+
 tinymce.init({
   selector: "#editor-container",
   inline: true,
@@ -73,3 +74,5 @@ tinymce.init({
   forced_root_blocks : false,
   directionality: 'ltr'
 });
+
+

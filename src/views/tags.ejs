@@ -8,7 +8,7 @@
                     <div class="inner-wrapper">
                         <div class="post-header-wrapper back_sec"><div class="back_btn"><span class="middle-header-content">#<%= calledTag %></span></div></div>
                         <%  articles.forEach(function(article) { 
-                            var tags = article.json.tags; var metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' ');var catg = article.json.category; var category = catg.charAt(0).toUpperCase() + catg.slice(1);var upvotes=JSON.stringify(article.votes); if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0}%>
+                            let tags = article.json?.tags || [];  var metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' ');var catg = article.json.category; var category = catg.charAt(0).toUpperCase() + catg.slice(1);var upvotes=JSON.stringify(article.votes); if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0}%>
                         <div>
                             <div class="inner-card-wrapper">
                                 <div class="card-userPic-wrapper">
@@ -26,6 +26,13 @@
                                     <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
                                     <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>">
                                     <div class="card-image-link"><iframe width="100%" height="auto" style="border: none;border-radius: 14px;min-height: 255px;" src="https://youtube.com/embed/<%-article.json.videoid%>?mute=1" loading="lazy"></iframe></div></a></div>
+                                    <%}else if(article.json.type==4){ %>
+                                    <div class="card-content-info card_home_title">
+                                    <a href="/search/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a>
+                                    </div>
+                                    <div class="post-content answer-post-content-home" style="margin-bottom: 1px;">
+                                    <p><%- article.json.body %> ...</p>
+                                    </div>
                                     <%}else if(article.json.type==0){%><div class="card-content-info card_home_title"><a href="/post/<%- article.author %>/<%- article.link %>"><%- article.json.title %></a></div>
                                     <div class="card-content-info card_home_tags"><%- metatags.toString() %></div>
                                     <div class="card-content-images"><a href="/post/<%- article.author %>/<%- article.link %>"><div class="card-image-link"><img alt="<%- article.link %>" src="<%- article.json.image %>" loading="lazy"/></div></a></div>

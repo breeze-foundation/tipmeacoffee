@@ -1,0 +1,29 @@
+<%- include('./common/header') %>
+<div id="root">
+  <div class="body-wrap" style="">
+    <main class="main">
+      <div class="middle-section ms-width">
+        <div class="Home-wrapper"> <%- include('./common/topnav') %>
+          <div class="share_link">
+            <h3 style="text-align: center;padding-bottom: 30px;">Ask anything...</h3>
+            <div class="share-block"><h4 class="share_sec_title"></h4></div>
+            <div class="form-group"><input type="text" class="form-control" id="ask_field" required="true" placeholder="Ask me..."></div>
+            <div class="wel_sec"><button type="button" class="Nav-entry-link ask_me"><span class="Nav-main-btn" id="ask_plus">Ask</span></button></div>
+          </div> 
+          <div class="shrim-wrap" style="display: none;">
+            <h3 class="shrim-title" style="text-align: left;padding-bottom: 10px;"></h3>
+            <div class="comment br animateShimmer"></div>
+            <div class="comment br animateShimmer w83"></div>
+            <div class="comment br animateShimmer w67"></div>
+         </div>
+          <div class="show-output" style="padding-top: 20px;">
+            <div id="output"></div>
+          </div>
+        </div>
+      </div>
+      <%- include('./common/rnav', {category: category}) %>
+    </main>
+    <%- include('./common/lnav') %>
+  </div>
+</div>
+<%- include('./common/footer') %>
