@@ -2,14 +2,11 @@ const express = require('express')
 const breej = require('breej')
 require('dotenv').config();
 const marked = require('marked');
-
+const { redisClient, checkDailyAskLimit, incrementDailyAskCount, getDailyAskCount } = require('../utils/redisUtils.js');
 const helper = require('./helper');
 const axios = require('axios')
 
-const tldts = require("tldts");
-const randomstring = require("randomstring")
 const getSlug = require('speakingurl')
-const isUrl = require("is-url")
 const Meta = require('html-metadata-parser')
 const { limit, substr } = require('stringz')
 const fetchTags = helper.getTags
@@ -30,7 +27,11 @@ async function post(req, res) {
     if(spammers.includes(author)){return res.send({ error: true, message: 'You are not allowed to post due to spamming!' })}
     const { title } = req.body;
     if (!title) {
-      return res.send({ error: 'Invalid or missing query.' });
+      return res.send({ error: true, message: 'Invalid or missing query.' });
+    }
+    const allowedToPost = await checkDailyAskLimit(author);
+    if (!allowedToPost) {
+      return res.send({error: true, message: 'Answer Engine is in beta so a temporary daily limit is held for users.' });
     }
     console.log('ip of ' + req.clientIp + ' author is ' + author)
     let permlink = getSlug(title);
@@ -47,7 +48,14 @@ async function post(req, res) {
 
         const answer = marked.parse(rawAnswer)
         //res.send({ output: answer });
-        
+        incrementDailyAskCount(author);
+        getDailyAskCount(author)
+        .then((count) => {
+          console.log(`User ${author} has asked ${count} questions today.`);
+        })
+        .catch((error) => {
+          console.error('Error fetching count:', error);
+        });
         let content = { title: title, body: answer, category: 'search', type: '4' };
         let newTx = { type: 4, data: { link: permlink, json: content } };
         breej.getAccount(author, async function (error, account) {
