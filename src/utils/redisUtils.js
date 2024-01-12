@@ -9,8 +9,6 @@ const redisClient = createClient({
   //password: process.env.REDIS_KEY,
 });
 
-redisClient.select(1);
-
 redisClient.connect((err) => {
   if (err) {
     console.error('Error connecting to Redis:', err);
@@ -19,31 +17,13 @@ redisClient.connect((err) => {
   }
 });
 
-// async function dailyAskLimit(userId) {
-//   // Check if the client is connected
-
-
-//   const today = new Date().toISOString().split('T')[0];
-//   const key = `user:${userId}:${today}`;
-
-//   try {
-//     const counter = await redisClient.incr(key);
-
-//     if (counter > 20) {
-//       console.log('User has exceeded the daily ask limit.');
-//       return false;
-//     }
-
-//     // Optionally, set expiration for the key (e.g., expire after one day)
-//     await redisClient.expire(key, 24 * 60 * 60);
-
-//     console.log('Ask function performed successfully.');
-//     return true;
-//   } catch (error) {
-//     console.error('Error in dailyAskLimit:', error);
-//     return false;
-//   }
-// }
+redisClient.select(1, (err) => {
+  if (err) {
+    console.error('Error selecting Redis database:', err);
+  } else {
+    // Other Redis operations here
+  }
+});
 
 async function checkDailyAskLimit(userId) {
   const today = new Date().toISOString().split('T')[0];
