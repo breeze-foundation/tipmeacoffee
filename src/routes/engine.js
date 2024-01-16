@@ -34,6 +34,10 @@ async function post(req, res) {
     if (/<[a-z][\s\S]*>/i.test(title)) {
       return res.send({ error: true, message: 'I am unable to answer html queries.' });
     }
+    const disallowedUrlPattern = /(?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(?:\/[^\s]*)?/;
+    if (disallowedUrlPattern.test(title)) {
+      return res.send({ error: true, message: 'Query does not seems a valid question, avoid sharing URLs.' });
+    }
     const allowedToPost = await checkDailyAskLimit(author);
     if (!allowedToPost) {
       return res.send({error: true, message: 'Answer Engine is in beta so a temporary daily limit is held for users.' });
