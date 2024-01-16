@@ -40,7 +40,7 @@ async function post(req, res) {
     }
     console.log('ip of ' + req.clientIp + ' author is ' + author)
     let permlink = getSlug(title);
-    sdk.post_chat_completion({
+    sdk.post_chat_completions({
       model: askEngineModel,
       messages: [
         { role: 'system', content: 'Be precise and concise' },
