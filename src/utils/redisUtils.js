@@ -31,7 +31,7 @@ async function checkDailyAskLimit(userId) {
 
   const counter = await redisClient.get(key);
 
-  if (counter && parseInt(counter, 10) >= 5) {
+  if (counter && parseInt(counter, 10) >= 3) {
     console.log('User has exceeded the daily ask limit.');
     return false;
   }

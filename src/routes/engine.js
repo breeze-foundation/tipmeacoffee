@@ -3,12 +3,7 @@ const breej = require('breej')
 require('dotenv').config();
 const marked = require('marked');
 const { redisClient, checkDailyAskLimit, incrementDailyAskCount, getDailyAskCount } = require('../utils/redisUtils.js');
-const helper = require('./helper');
-
 const getSlug = require('speakingurl')
-const Meta = require('html-metadata-parser')
-const { limit, substr } = require('stringz')
-const fetchTags = helper.getTags
 
 const askEngineName = process.env.ASK_ENGINE_NAME;
 const askEngineKey = process.env.ASK_ENGINE_KEY;
@@ -16,17 +11,28 @@ const askEngineModel = process.env.ASK_ENGINE_MODEL;
 const sdk = require('api')(askEngineName);
 sdk.auth(askEngineKey);
 
-
-
 async function post(req, res) {
-  if(req.cookies && req.cookies.breeze_username && req.cookies.breeze_username !=='' && req.cookies.token && req.cookies.token !=='' && await validateToken(req.cookies.breeze_username, req.cookies.token)) 
-  {
+  if (
+    req.cookies &&
+    req.cookies.breeze_username &&
+    req.cookies.breeze_username !== '' &&
+    req.cookies.token &&
+    req.cookies.token !== '' &&
+    (await validateToken(req.cookies.breeze_username, req.cookies.token))
+  ) {
     let author = req.cookies.breeze_username;
     let token = req.cookies.token;
-    if(spammers.includes(author)){return res.send({ error: true, message: 'You are not allowed to post due to spamming!' })}
+
+    if (spammers.includes(author)) {
+      return res.send({ error: true, message: 'You are not allowed to post due to spamming!' });
+    }
     const { title } = req.body;
+    console.log(title)
     if (!title) {
       return res.send({ error: true, message: 'Invalid or missing query.' });
+    }
+    if (/<[a-z][\s\S]*>/i.test(title)) {
+      return res.send({ error: true, message: 'I am unable to answer html queries.' });
     }
     const allowedToPost = await checkDailyAskLimit(author);
     if (!allowedToPost) {
@@ -34,7 +40,7 @@ async function post(req, res) {
     }
     console.log('ip of ' + req.clientIp + ' author is ' + author)
     let permlink = getSlug(title);
-    sdk.post_chat_completions({
+    sdk.post_chat_completion({
       model: askEngineModel,
       messages: [
         { role: 'system', content: 'Be precise and concise' },
