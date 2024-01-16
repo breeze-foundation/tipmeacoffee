@@ -10,7 +10,7 @@
                     </div>
                     <% 
                     articles.forEach(function(article) { 
-                    let tags = article.json.tags;
+                        let tags = article.json.tags || [];
                     let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' ');
                     var catg = article.json.category; var category = catg.charAt(0).toUpperCase() + catg.slice(1);let upvotes=JSON.stringify(article.votes);if(article.likes>0){postIncome=((article.dist)/1000000).toString()}else{postIncome=0}
                     %>

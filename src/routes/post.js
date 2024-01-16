@@ -4,8 +4,8 @@ const axios = require('axios')
 const fetch = require("node-fetch");
 const moment = require('moment')
 const tldts = require("tldts");
-const helper = require('./helper')
-const fetchTags = helper.getTags
+//const helper = require('./helper')
+//const fetchTags = helper.getTags
 
 async function page(req, res) {
     let author = req.params.name; let link = req.params.link;
@@ -13,7 +13,7 @@ async function page(req, res) {
     if(content==null){ 
         return res.status(404).redirect('/404') 
     }else{ 
-        let nTags = await fetchTags(); 
+        //let nTags = await fetchTags(); 
         let post_title = content.json.title; res.locals.title = post_title;
         let post_body = content.json.body.replace(/"/g, "'"); 
         let post_description = post_body.split(" ").splice(0,20).join(" ").replace(/\s+((?=\<)|(?=$))/g, ' ').replace(/(?:&nbsp;|<br>)/g,''); 
@@ -31,7 +31,7 @@ async function page(req, res) {
             res.render('post', {
                 article: content, 
                 moment: moment, 
-                trendingTags: nTags, 
+                //trendingTags: nTags, 
                 loguser: loguser, 
                 acct: actAPI.data, 
                 user: userAPI.data, 
@@ -44,7 +44,7 @@ async function page(req, res) {
             res.render('post', { 
                 article: content,  
                 moment: moment, 
-                trendingTags: nTags, 
+                //trendingTags: nTags, 
                 loguser: loguser, 
                 user: userAPI.data, 
                 category: categoryList, 

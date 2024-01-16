@@ -36,3 +36,12 @@ if(darkMode === 'enabled') {enableDarkMode();}
 darkModeToggle.addEventListener('click', ()=> { darkMode = localStorage.getItem('darkMode'); if(darkMode !== 'enabled') { enableDarkMode(); } else { disableDarkMode() } })
 switch(nav_val){case"home":case"wallet":case"notic":case"feed":case"profile":case"reward":case"staking":case"mining":case"witnesses":case"explorer":case"help":var item;(item=document.getElementById(nav_val)).classList.add("active-Nav")}
 let trimString = function (string, length) {return string.length > length ? string.substring(0, length) : string;};
+
+$('form').on('submit', function(event) {
+    event.preventDefault();
+});
+$('.rnav-ask').on('click', function() {
+    let rnav_input_ask = $("#rnav_ask_field").val().trim();  
+    if (!rnav_input_ask){ $("#rnav_ask_field").css("border-color", "RED");toastr.error('phew... You forgot to ask question');return false;}
+    window.location.href = '/ask?query=' + encodeURIComponent(rnav_input_ask);
+})

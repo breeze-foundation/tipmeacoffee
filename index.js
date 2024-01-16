@@ -6,35 +6,24 @@ const CryptoJS = require("crypto-js")
 const fs = require('fs')
 const fileUpload = require('express-fileupload')
 const fetch = require("node-fetch")
+const axios = require('axios')
 
 const requestIp = require('request-ip');
 const RateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 
-const main = require('./src/routes/main');
-const post = require('./src/routes/post');
-const answerRouter = require('./src/routes/answerPage');
-const accountRouter = require('./src/routes/accounts')
-const publish = require('./src/routes/publish')
-const engine = require('./src/routes/engine')
-const walletRouter = require('./src/routes/wallet')
-const profileRouter = require('./src/routes/profile')
-const voteRouter = require('./src/routes/vote')
-const shareRouter = require('./src/routes/share')
-const askRouter = require('./src/routes/ask')
-const catgRouter = require('./src/routes/category')
-const notifyRouter = require('./src/routes/notify')
-const witRouter = require('./src/routes/witness')
-const app = express();
-
 require('dotenv').config();
 const { connectDatabase } = require("./src/utils/db");
 connectDatabase().then(() => {console.log("Connected to DB. Initializing client."); });
+
+
+const app = express();
 
 global.api_url = 'https://api.tipmeacoffee.com';
 const { apiCheck } = require('./src/utils/apiCheck')
 app.use(apiCheck)
 breej.init({ api: api_url, bwGrowth: 36000000000, vpGrowth: 120000000000 })
+
 global.msgkey = process.env.msgKey 
 global.iv = process.env.breezval
 global.getAccountPub = (username) => { return new Promise((res, rej) => { breej.getAccount(username, function (error, account) { if (error) rej(error); if (!account) rej(); if (account.pub) res(account.pub); }) }) }
@@ -51,6 +40,42 @@ const voteLimiter = RateLimit({ windowMs: 1 * 60 * 1000, max: 100, message: 'Too
 
 app.use(limiter);
 app.use(requestIp.mw());
+
+app.use(async (req, res, next) => {
+    try {
+        const response = await axios.get(`${api_url}/new?category=search`);
+        if (response.status === 200) {
+            const articles = response.data;
+            if (articles && articles.length > 0) {
+                res.locals.aiArticles = articles; 
+            } else {
+                res.locals.aiArticlesError = 'No articles found';
+            }
+        } else {
+            res.locals.aiArticlesError = `API returned status ${response.status}`;
+        }
+        next();
+    } catch (error) {
+        res.locals.aiArticlesError = 'Error fetching ai articles';
+        next();
+    }
+});
+  
+const main = require('./src/routes/main');
+const post = require('./src/routes/post');
+const answerRouter = require('./src/routes/answerPage');
+const accountRouter = require('./src/routes/accounts')
+const publish = require('./src/routes/publish')
+const engine = require('./src/routes/engine')
+const walletRouter = require('./src/routes/wallet')
+const profileRouter = require('./src/routes/profile')
+const voteRouter = require('./src/routes/vote')
+const shareRouter = require('./src/routes/share')
+const askRouter = require('./src/routes/ask')
+const catgRouter = require('./src/routes/category')
+const notifyRouter = require('./src/routes/notify')
+const witRouter = require('./src/routes/witness')
+
 
 app.use(mongoSanitize());
 app.use(express.static('public'))
