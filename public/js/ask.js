@@ -23,7 +23,7 @@ $('.ask_me').on('click', function() {
       }
     }, 
     error: function(jqXHR, textStatus, errorThrown) {
-      //console.error('AJAX Error:', textStatus, errorThrown);
+      console.error('AJAX Error:', textStatus, errorThrown);
       toastr.error('An error occurred, please ask support team.');
       $('.shrim-title').html();
       $('.shrim-wrap').hide();
