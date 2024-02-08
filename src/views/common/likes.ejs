@@ -1,6 +1,6 @@
 <%  likes.forEach(function(like) { 
-    let tags = like.json.tags;
-    let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' ');
+    let tags = like.json?.tags || [];
+    let metatags = tags.map(s => '<a href="/tags/'+s+'">#'+s+'</a>').join(' '); 
     let catg = like.json.category; let category = catg.charAt(0).toUpperCase() + catg.slice(1);if(like.likes>0){postIncome=((like.dist)/1000000).toString()}else{postIncome=0}
 %>   
 <div>
