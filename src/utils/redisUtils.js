@@ -6,7 +6,7 @@ const redisClient = createClient({
     host: process.env.REDIS_HOST, 
     port: process.env.REDIS_PORT
   },
-  //password: process.env.REDIS_KEY,
+  password: process.env.REDIS_KEY,
 });
 
 redisClient.connect((err) => {
@@ -31,7 +31,7 @@ async function checkDailyAskLimit(userId) {
 
   const counter = await redisClient.get(key);
 
-  if (counter && parseInt(counter, 10) >= 3) {
+  if (counter && parseInt(counter, 10) >= 5) {
     console.log('User has exceeded the daily ask limit.');
     return false;
   }

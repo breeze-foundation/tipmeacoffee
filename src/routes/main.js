@@ -173,6 +173,25 @@ router.get('/feed', async (req, res, next) => {
   } else { return res.redirect('/')}
 })
 
+router.get('/sitemap.txt', async (req, res) => {
+  try {
+      const response = await axios.get(api_url + '/new?category=search');
+      const articles = response.data;
+      const siteURL = "https://tipmeacoffee.com";
+
+      let sitemapContent = '';
+      articles.forEach((article, index) => {
+        const url = `${siteURL}/${article.author}/${article.link}`;
+        sitemapContent += `${url}\n`;
+      });
+      res.set('Content-Type', 'text/plain');
+      res.send(sitemapContent);
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('Internal Server Error');
+  }
+});
+
 router.get('/tos', async (req, res) => { 
   let nTags = await fetchTags(); 
   if (await validateToken(req.cookies.breeze_username, req.cookies.token))
